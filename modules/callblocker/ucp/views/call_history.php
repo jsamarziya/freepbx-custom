@@ -26,10 +26,12 @@
     </table>
 </div>
 <script>
-    $('#call-history-table').on('load-success.bs.table', function (e, data) {
-        const tableData = $('#call-history-table').bootstrapTable('getData');
-        for (const row of tableData) {
+    const table = $('#call-history-table');
+    table.on('load-success.bs.table', function (e, data) {
+        for (let i = 0; i < data.rows.length; i++) {
+            const row = data.rows[i];
             row.cid = "myCID";
+            table.bootstrapTable('updateRow', i, row);
         }
-    })
+    });
 </script>
