@@ -290,7 +290,7 @@ var CallblockerC = UCPMC.extend({
             }
         });
     },
-    formatCallHistoryTimestamp: function(list, value, row, index, field){
+    formatCallHistoryTimestamp: function(value, row, index, field){
         return UCP.dateTimeFormatter(value);
     }
 });
