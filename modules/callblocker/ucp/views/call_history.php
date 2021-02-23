@@ -25,3 +25,8 @@
         </thead>
     </table>
 </div>
+<script>
+    $('#call-history-table').on('load-success.bs.table', function (e, data) {
+        alert("loaded data");
+    })
+</script>
