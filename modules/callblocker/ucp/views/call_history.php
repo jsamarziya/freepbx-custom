@@ -26,7 +26,6 @@
     </table>
 </div>
 <script>
-    var initialized = false;
     if (!initialized) {
         const clid_re = /"(.*)" <(.*)>/;
         const table = $('#call-history-table');
@@ -41,6 +40,6 @@
                 table.bootstrapTable('updateRow', i, row);
             }
         });
-        initialized = true;
+        const initialized = true;
     }
 </script>
