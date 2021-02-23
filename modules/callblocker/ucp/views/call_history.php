@@ -31,7 +31,7 @@
     table.on('load-success.bs.table', function (e, data) {
         for (let i = 0; i < data.rows.length; i++) {
             const row = data.rows[i];
-            const cid_parts = data.clid.match(clid_re);
+            const cid_parts = row.clid.match(clid_re);
             if (cid_parts) {
                 row.cid = cid_parts[0];
                 row.description = cid_parts[1];
