@@ -266,7 +266,7 @@ class Callblocker extends Modules {
     }
 
     function validateList($list) {
-        if ($list == 'xblacklist' or $list == 'xwhitelist') {
+        if ($list == 'blacklist' or $list == 'whitelist') {
             return;
         }
         throw new \Exception('invalid list');
