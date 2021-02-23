@@ -26,7 +26,7 @@
     </table>
 </div>
 <script>
-    let initialized = false;
+    var initialized = false;
     if (!initialized) {
         const clid_re = /"(.*)" <(.*)>/;
         const table = $('#call-history-table');
