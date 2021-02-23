@@ -322,7 +322,7 @@ class Callblocker extends Modules {
 	}
 
         function get_mysql_connection(){
-            include '/var/www/html/ucp/modules/Callblocker/db.php';
+            include '/etc/callblocker.conf';
             $mysqli = new \mysqli($servername, $username, $password);
             if ($mysqli->connect_error) {
                 throw new \Exception("Connect failed: " . $mysqli->connect_error);
