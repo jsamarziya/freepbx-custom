@@ -33,8 +33,8 @@
             const row = data.rows[i];
             const cid_parts = row.clid.match(clid_re);
             if (cid_parts) {
-                row.cid = cid_parts[1];
-                row.description = cid_parts[2];
+                row.cid = cid_parts[2];
+                row.description = cid_parts[1];
             }
             table.bootstrapTable('updateRow', i, row);
         }
