@@ -168,9 +168,9 @@ var CallblockerC = UCPMC.extend({
         return `<a onclick="UCP.Modules.Callblocker.showEditWhitelistEntryDialog(${row.id})"><i class="fa fa-pencil"></i></a> <a onclick="UCP.Modules.Callblocker.confirmDelete(${row.id})"><i class="fa fa-trash-o"></i></a>`;
     },
     confirmDelete: function (id) {
-        row = UCP.Modules.Callblocker.getWhitelistEntry(id);
-        cid = new Option(row.cid).innerHTML;
-        description = new Option(row.description).innerHTML;
+        const row = UCP.Modules.Callblocker.getWhitelistEntry(id);
+        const cid = new Option(row.cid).innerHTML;
+        const description = new Option(row.description).innerHTML;
         UCP.showConfirm(
             `<i class="fa fa-warning"></i> Are you sure you wish to delete <b>${cid} "${description}"</b>?`,
             'warning',
@@ -247,9 +247,10 @@ var CallblockerC = UCPMC.extend({
                <button type="button" class="btn btn-primary" onclick="UCP.Modules.Callblocker.updateWhitelistEntry(${row.id})">Update Entry</button>
            `;
         UCP.showDialog("Edit Entry", content, footer, function () {
-            $('#edit-whitelist-cid').val(row.cid);
+            const cid_input = $('#edit-whitelist-cid');
+            cid_input.val(row.cid);
             $('#edit-whitelist-description').val(row.description);
-            $('#edit-whitelist-cid').focus();
+            cid_input.focus();
         });
     },
     updateWhitelistEntry: function (id) {
