@@ -165,7 +165,10 @@ var CallblockerC = UCPMC.extend({
      * Formats the "Controls" whitelist column.
      */
     formatWhitelistControls: function (value, row, index, field) {
-        return `<a onclick="UCP.Modules.Callblocker.showEditWhitelistEntryDialog(${row.id})"><i class="fa fa-pencil"></i></a> <a onclick="UCP.Modules.Callblocker.confirmDelete(${row.id})"><i class="fa fa-trash-o"></i></a>`;
+        return `
+            <a title="Edit" onclick="UCP.Modules.Callblocker.showEditWhitelistEntryDialog(${row.id})"><i class="fa fa-pencil"></i></a> 
+            <a title="Delete" onclick="UCP.Modules.Callblocker.confirmDelete(${row.id})"><i class="fa fa-trash-o"></i></a>
+        `;
     },
     confirmDelete: function (id) {
         const row = UCP.Modules.Callblocker.getWhitelistEntry(id);
