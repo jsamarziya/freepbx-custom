@@ -27,7 +27,7 @@
 </div>
 <script>
     $('#call-history-table').on('load-success.bs.table', function (e, data) {
-        for (const row of data.rows) {
+        for (const row of data) {
             row.cid = "myCID";
         }
     })
