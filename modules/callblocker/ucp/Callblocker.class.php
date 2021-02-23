@@ -46,9 +46,10 @@ class Callblocker extends Modules {
 
     /**
      * Get Simple Widget List
+     *
      * @method getSimpleWidgetList
      * @link https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-getSimpleWidgetList
-     * @return array               Array of information
+     * @return array Array of information
      */
     public function getSimpleWidgetList() {
         return array();
@@ -73,9 +74,10 @@ class Callblocker extends Modules {
 
     /**
      * Get Widget List
+     *
      * @method getWidgetList
      * @link https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-getWidgetList
-     * @return array               Array of information
+     * @return array Array of information
      */
     public function getWidgetList() {
         $widget = array(
@@ -101,11 +103,12 @@ class Callblocker extends Modules {
 
     /**
      * Get Simple Widget Display
+     *
      * @method getWidgetDisplay
      * @link https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-getSimpleWidgetDisplay
      * @param  string $id The widget id. This is the key of the 'list' array in getSimpleWidgetList
      * @param  string $uuid The generated UUID of the widget on this dashboard
-     * @return array               Array of information
+     * @return array Array of information
      */
     public function getSimpleWidgetDisplay($id, $uuid) {
         $widget = array();
@@ -130,11 +133,12 @@ class Callblocker extends Modules {
 
     /**
      * Get Widget Display
+     *
      * @method getWidgetDisplay
      * @link https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-getSimpleWidgetDisplay
      * @param  string $id The widget id. This is the key of the 'list' array in getWidgetList
      * @param  string $uuid The UUID of the widget
-     * @return array               Array of information
+     * @return array Array of information
      */
     public function getWidgetDisplay($id, $uuid) {
         $widget = array();
@@ -159,11 +163,12 @@ class Callblocker extends Modules {
 
     /**
      * Get Widget Settings Display
+     *
      * @method getWidgetDisplay
      * @link https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-getWidgetSettingsDisplay
      * @param  string $id The widget id. This is the key of the 'list' array in getWidgetList
      * @param  string $uuid The UUID of the widget
-     * @return array               Array of information
+     * @return array Array of information
      */
     public function getWidgetSettingsDisplay($id, $uuid) {
         $displayvars = array();
@@ -189,11 +194,12 @@ class Callblocker extends Modules {
 
     /**
      * Get Simple Widget Settings Display
+     *
      * @method getSimpleWidgetDisplay
      * @link https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-getSimpleWidgetSettingsDisplay
      * @param  string $id The widget id. This is the key of the 'list' array in getWidgetList
      * @param  string $uuid The UUID of the widget
-     * @return array               Array of information
+     * @return array Array of information
      */
     public function getSimpleWidgetSettingsDisplay($id, $uuid) {
         $displayvars = array();
@@ -219,9 +225,10 @@ class Callblocker extends Modules {
 
     /**
      * Display a Tab in the user settings modal
+     *
      * @method getUserSettingsDisplay
      * @link https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-getUserSettingsDisplay
-     * @return array               Array of information
+     * @return array Array of information
      */
     function getUserSettingsDisplay() {
         return array();
@@ -244,10 +251,11 @@ class Callblocker extends Modules {
 
     /**
      * Poll for information
+     *
      * @method poll
      * @link https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-poll(PHP)
-     * @param $data               Data from Javascript prepoll function (if any). See: https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-prepoll
-     * @return mixed              Data you'd like to send back to the javascript for this module. See: https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-poll(Javascript)
+     * @param $data Data from Javascript prepoll function (if any). See: https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-prepoll
+     * @return mixed Data you'd like to send back to the javascript for this module. See: https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-poll(Javascript)
      */
     public function poll($data) {
         $items = array();
@@ -262,11 +270,12 @@ class Callblocker extends Modules {
 
     /**
      * Ajax Request
+     *
      * @method ajaxRequest
      * @link https://wiki.freepbx.org/display/FOP/BMO+Ajax+Calls#BMOAjaxCalls-ajaxRequest
      * @param  string $command The command name
      * @param  array $settings Returned array settings
-     * @return boolean                True if allowed or false if not allowed
+     * @return boolean True if allowed or false if not allowed
      */
     public function ajaxRequest($command, $settings) {
         switch ($command) {
@@ -283,9 +292,10 @@ class Callblocker extends Modules {
 
     /**
      * Ajax Handler
+     *
      * @method ajaxHandler
      * @link https://wiki.freepbx.org/display/FOP/BMO+Ajax+Calls#BMOAjaxCalls-ajaxHandler
-     * @return mixed      Data to return to Javascript
+     * @return mixed Data to return to Javascript
      */
     public function ajaxHandler() {
         switch ($_REQUEST['command']) {
@@ -310,6 +320,7 @@ class Callblocker extends Modules {
 
     /**
      * The Handler for unprocessed commands
+     *
      * @method ajaxCustomHandler
      * @link https://wiki.freepbx.org/display/FOP/BMO+Ajax+Calls#BMOAjaxCalls-ajaxCustomHandler
      * @return mixed Output if success, otherwise false will generate a 500 error serverside
