@@ -6,33 +6,6 @@
 	init: function(){
 		this.socket = null;
 		this.time = moment.utc().unix();
-		console.log('%c'+sprintf(_("callblocker has been loaded at %s"),UCP.dateTimeFormatter(this.time)),'background: #222; color: #bada55');
-		console.log('%c'+sprintf(_("callblocker has been loaded at %s"),UCP.timeFormatter(this.time)),'background: #222; color: #bada55');
-		console.log('%c'+sprintf(_("callblocker has been loaded at %s"),UCP.dateFormatter(this.time)),'background: #222; color: #bada55');
-		console.log('%c'+sprintf(_("Your Timezone is %s"),timezone),'background: #222; color: #bada55');
-		console.log('%c'+sprintf(_("Your Moment date format is %s"),dateformat),'background: #222; color: #bada55');
-		console.log('%c'+sprintf(_("Your Moment time format is %s"),timeformat),'background: #222; color: #bada55');
-		console.log('%c'+sprintf(_("Your Moment date/time format is %s"),datetimeformat),'background: #222; color: #bada55');
-
-		/**
-		 * This trigger is executed when the user logs in (Or page is refreshed)
-		 * @method
-		 * @link https://wiki.freepbx.org/pages/viewpage.action?pageId=78479865#DevelopingforUCP14+-logIn
-		 * @param  object event The event object
-		 */
-		$(document).on("logIn", function(event) {
-			console.log("User has logged in!");
-		});
-
-		/**
-		 * This trigger is executed when the user logs out
-		 * @method
-		 * @link https://wiki.freepbx.org/pages/viewpage.action?pageId=71271742#DevelopingforUCP14+-logOut
-		 * @param  object event The event object
-		 */
-		$(document).on("logOut", function(event) {
-			console.log("User has logged out!");
-		});
 	},
 	/**
 	 * Add Simple Widget
