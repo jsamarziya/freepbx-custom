@@ -26,20 +26,17 @@
     </table>
 </div>
 <script>
-    if (!initialized) {
+    $('#call-history-table').on('load-success.bs.table', function (e, data) {
         const clid_re = /"(.*)" <(.*)>/;
         const table = $('#call-history-table');
-        table.on('load-success.bs.table', function (e, data) {
-            for (let i = 0; i < data.rows.length; i++) {
-                const row = data.rows[i];
-                const cid_parts = row.clid.match(clid_re);
-                if (cid_parts) {
-                    row.cid = cid_parts[2];
-                    row.description = cid_parts[1];
-                }
-                table.bootstrapTable('updateRow', i, row);
+        for (let i = 0; i < data.rows.length; i++) {
+            const row = data.rows[i];
+            const cid_parts = row.clid.match(clid_re);
+            if (cid_parts) {
+                row.cid = cid_parts[2];
+                row.description = cid_parts[1];
             }
-        });
-        const initialized = true;
-    }
+            table.bootstrapTable('updateRow', i, row);
+        }
+    });
 </script>
