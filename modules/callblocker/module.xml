@@ -1,30 +1,31 @@
-
 <module>
-  <rawname>callblocker</rawname>
-  <repo>standard</repo>
-  <name>Call Blocker</name>
-  <description>UCP application for Call Blocker.</description>
-  <category>Applications</category>
-  <version>14.0.1</version>
-  <publisher>Jeffrey Samarziya</publisher>
-  <license>GPLv2</license>
-  <licenselink>http://www.gnu.org/licenses/gpl-3.0.txt</licenselink>
-  <changelog>*14.0.1* Initial release</changelog>
-  <menuitems>
-    <!--<callblocker>Call Blocker</callblocker>-->
-  </menuitems>
-  <hooks>
-    <ucp class="Ucp">
-      <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="constructModuleConfigPages">ucpConfigPage</method>
-      <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="addUser">ucpAddUser</method>
-      <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="updateUser">ucpUpdateUser</method>
-      <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="delUser">ucpDelUser</method>
-      <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="addGroup">ucpAddGroup</method>
-      <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="updateGroup">ucpUpdateGroup</method>
-      <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="delGroup">ucpDelGroup</method>
-    </ucp>
-  </hooks>
-  <supported>
-    <version>14.0</version>
-  </supported>
+    <rawname>callblocker</rawname>
+    <repo>standard</repo>
+    <name>Call Blocker</name>
+    <description>UCP application for Call Blocker.</description>
+    <category>Applications</category>
+    <version>14.0.1</version>
+    <publisher>Jeffrey Samarziya</publisher>
+    <license>GPLv2</license>
+    <licenselink>http://www.gnu.org/licenses/gpl-3.0.txt</licenselink>
+    <changelog>*14.0.1* Initial release</changelog>
+    <menuitems>
+        <!--<callblocker>Call Blocker</callblocker>-->
+    </menuitems>
+    <hooks>
+        <ucp class="Ucp">
+            <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="constructModuleConfigPages">
+                ucpConfigPage
+            </method>
+            <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="addUser">ucpAddUser</method>
+            <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="updateUser">ucpUpdateUser</method>
+            <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="delUser">ucpDelUser</method>
+            <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="addGroup">ucpAddGroup</method>
+            <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="updateGroup">ucpUpdateGroup</method>
+            <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="delGroup">ucpDelGroup</method>
+        </ucp>
+    </hooks>
+    <supported>
+        <version>14.0</version>
+    </supported>
 </module>
