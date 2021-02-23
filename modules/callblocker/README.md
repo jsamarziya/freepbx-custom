@@ -14,7 +14,7 @@ This is a module for [FreePBX©](http://www.freepbx.org/ "FreePBX Home Page"). [
 
 ### Why?
 
-This module is here to demonstrate adding functionality to UCP. This does not add anything to the FreePBX GUI but will add items to the User Control Panel
+This module contains a custom call blocker UCP module.
 
 ### Setting up a FreePBX system
 [See our WIKI](http://wiki.freepbx.org/display/FOP/Install+FreePBX)
