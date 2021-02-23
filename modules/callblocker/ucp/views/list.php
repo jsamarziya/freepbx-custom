@@ -24,7 +24,7 @@
             <th data-field="cid" data-sortable="true" data-width="15%">CID</th>
             <th data-field="description" data-sortable="true">Description</th>
             <th class="text-nowrap" data-width="5%"
-                data-formatter="function(value,row,index,field){UCP.Modules.Callblocker.formatListControls('<?php echo $list ?>',value,row,index,field)}">
+                data-formatter="UCP.Modules.Callblocker.format<?php echo ucfirst(strtolower($list)) ?>Controls">
                 Controls
             </th>
         </tr>

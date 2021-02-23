@@ -161,9 +161,12 @@ var CallblockerC = UCPMC.extend({
 
         }
     },
-    /**
-     * Formats the "Controls" list column.
-     */
+    formatBlacklistControls: function (value, row, index, field) {
+        return UCP.Modules.Callblocker.formatListControls('blacklist', value, row, index, field);
+    },
+    formatWhitelistControls: function (value, row, index, field) {
+        return UCP.Modules.Callblocker.formatListControls('whitelist', value, row, index, field);
+    },
     formatListControls: function (list, value, row, index, field) {
         return `
             <a title="Edit" onclick="UCP.Modules.Callblocker.showEditListEntryDialog('${list}',${row.id})"><i class="fa fa-pencil"></i></a> 
