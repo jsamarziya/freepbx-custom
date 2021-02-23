@@ -331,7 +331,7 @@ class Callblocker extends Modules {
     function getWhitelist() {
         $mysqli = $this->get_mysql_connection();
         $whitelist = [];
-        $query = "SELECT id, cid_number as cid, description FROM callblocker.whitelist";
+        $query = "SELECT id, cid_number AS cid, description FROM callblocker.whitelist";
         if ($result = $mysqli->query($query)) {
             while ($row = $result->fetch_assoc()) {
                 $whitelist[] = $row;
@@ -354,7 +354,7 @@ class Callblocker extends Modules {
 
     function updateWhitelistEntry($id, $cid, $description) {
         $mysqli = $this->get_mysql_connection();
-        if ($stmt = $mysqli->prepare("UPDATE callblocker.whitelist SET cid_number=?, description=? where id=?")) {
+        if ($stmt = $mysqli->prepare("UPDATE callblocker.whitelist SET cid_number=?, description=? WHERE id=?")) {
             $stmt->bind_param("ssi", $cid, $description, $id);
             $stmt->execute();
             $stmt->close();
