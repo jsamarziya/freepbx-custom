@@ -1,14 +1,14 @@
 <div class="col-md-12">
-    <div id="whitelist-toolbar">
+    <div id="<?php echo $list ?>-toolbar">
         <button class="btn btn-primary" title="Add Entry"
-                onclick="UCP.Modules.Callblocker.showAddWhitelistEntryDialog()">
+                onclick="UCP.Modules.Callblocker.showAddListEntryDialog()">
             <i class="fa fa-plus-circle"></i> Add
         </button>
     </div>
-    <table id="whitelistTable"
+    <table id="<?php echo $list ?>-table"
            class="table"
-           data-toolbar="#whitelist-toolbar"
-           data-url="ajax.php?module=callblocker&amp;command=grid"
+           data-toolbar="#<?php echo $list ?>-toolbar"
+           data-url="ajax.php?module=callblocker&amp;command=getList&amp;list=<?php echo $list ?>"
            data-cache="false"
            data-show-toggle="true"
            data-toggle="table"
@@ -23,7 +23,8 @@
             <th data-field="id" data-visible="false">ID</th>
             <th data-field="cid" data-sortable="true" data-width="15%">CID</th>
             <th data-field="description" data-sortable="true">Description</th>
-            <th class="text-nowrap" data-width="5%" data-formatter="UCP.Modules.Callblocker.formatWhitelistControls">
+            <th class="text-nowrap" data-width="5%"
+                data-formatter="function(value,row,index,field){UCP.Modules.Callblocker.formatListControls('<?php echo $list ?>',value,row,index,field)}">
                 Controls
             </th>
         </tr>

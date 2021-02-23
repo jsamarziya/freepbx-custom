@@ -162,28 +162,28 @@ var CallblockerC = UCPMC.extend({
         }
     },
     /**
-     * Formats the "Controls" whitelist column.
+     * Formats the "Controls" list column.
      */
-    formatWhitelistControls: function (value, row, index, field) {
+    formatListControls: function (list, value, row, index, field) {
         return `
-            <a title="Edit" onclick="UCP.Modules.Callblocker.showEditWhitelistEntryDialog(${row.id})"><i class="fa fa-pencil"></i></a> 
-            <a title="Delete" onclick="UCP.Modules.Callblocker.confirmDelete(${row.id})"><i class="fa fa-trash-o"></i></a>
+            <a title="Edit" onclick="UCP.Modules.Callblocker.showEditListEntryDialog('${list}',${row.id})"><i class="fa fa-pencil"></i></a> 
+            <a title="Delete" onclick="UCP.Modules.Callblocker.confirmDelete('${list}',${row.id})"><i class="fa fa-trash-o"></i></a>
         `;
     },
-    confirmDelete: function (id) {
-        const row = UCP.Modules.Callblocker.getWhitelistEntry(id);
+    confirmDelete: function (list, id) {
+        const row = UCP.Modules.Callblocker.getListEntry(list, id);
         const cid = new Option(row.cid).innerHTML;
         const description = new Option(row.description).innerHTML;
         UCP.showConfirm(
             `<i class="fa fa-warning"></i> Are you sure you wish to delete <b>${cid} "${description}"</b>?`,
             'warning',
             function () {
-                UCP.Modules.Callblocker.deleteWhitelistEntry(id);
+                UCP.Modules.Callblocker.deleteListEntry(list, id);
             }
         );
     },
-    getWhitelistEntry: function (id) {
-        const data = $('#whitelistTable').bootstrapTable('getData');
+    getListEntry: function (list, id) {
+        const data = $(`#${list}-table`).bootstrapTable('getData');
         for (const row of data) {
             // noinspection EqualityComparisonWithCoercionJS
             if (row.id == id) {
@@ -192,85 +192,97 @@ var CallblockerC = UCPMC.extend({
         }
         return null;
     },
-    deleteWhitelistEntry: function (id) {
+    deleteListEntry: function (list, id) {
         $.ajax({
             url: "ajax.php",
-            data: {"module": "callblocker", "command": "deleteWhitelistEntry", "id": id},
+            data: {
+                "module": "callblocker",
+                "command": "deleteListEntry",
+                "list": list,
+                "id": id
+            },
             success: function (data) {
-                $('#whitelistTable').bootstrapTable('remove', {field: 'id', values: [id.toString()]});
+                $(`#${list}-table`).bootstrapTable('remove', {field: 'id', values: [id.toString()]});
             }
         });
     },
-    showAddWhitelistEntryDialog: function () {
+    showAddListEntryDialog: function (list) {
         const content = `
                <div class="form-group">
-                   <label for="add-whitelist-cid">CID</label>
-                   <input type="text" class="form-control" id="add-whitelist-cid">
+                   <label for="add-list-entry-cid">CID</label>
+                   <input type="text" class="form-control" id="add-list-entry-cid">
                </div>
                <div class="form-group">
-                   <label for="add-whitelist-description">Description</label>
-                   <input type="text" class="form-control" id="add-whitelist-description">
+                   <label for="add-list-entry-description">Description</label>
+                   <input type="text" class="form-control" id="add-list-entry-description">
                </div>
            `;
         const footer = `
                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-               <button type="button" class="btn btn-primary" onclick="UCP.Modules.Callblocker.addWhitelistEntry()">Add Entry</button>
+               <button type="button" class="btn btn-primary" onclick="UCP.Modules.Callblocker.addListEntry('${list}')">Add Entry</button>
            `;
         UCP.showDialog("Add Entry", content, footer, function () {
-            $('#add-whitelist-cid').focus();
+            $('#add-list-entry-cid').focus();
         });
     },
-    addWhitelistEntry: function () {
-        const cid = $("#add-whitelist-cid").val();
-        const description = $("#add-whitelist-description").val();
-        $.ajax({
-            url: "ajax.php",
-            method: "post",
-            data: {"module": "callblocker", "command": "addWhitelistEntry", "cid": cid, "description": description},
-            success: function (data) {
-                $('#whitelistTable').bootstrapTable('refresh');
-                $('#globalModal').modal('hide')
-            }
-        });
-    },
-    showEditWhitelistEntryDialog: function (id) {
-        const row = UCP.Modules.Callblocker.getWhitelistEntry(id);
-        const content = `
-               <div class="form-group">
-                   <label for="edit-whitelist-cid">CID</label>
-                   <input type="text" class="form-control" id="edit-whitelist-cid">
-               </div>
-               <div class="form-group">
-                   <label for="edit-whitelist-description">Description</label>
-                   <input type="text" class="form-control" id="edit-whitelist-description">
-               </div>
-           `;
-        const footer = `
-               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-               <button type="button" class="btn btn-primary" onclick="UCP.Modules.Callblocker.updateWhitelistEntry(${row.id})">Update Entry</button>
-           `;
-        UCP.showDialog("Edit Entry", content, footer, function () {
-            const cid_input = $('#edit-whitelist-cid');
-            cid_input.val(row.cid);
-            $('#edit-whitelist-description').val(row.description);
-            cid_input.focus();
-        });
-    },
-    updateWhitelistEntry: function (id) {
-        const cid = $("#edit-whitelist-cid").val();
-        const description = $("#edit-whitelist-description").val();
+    addListEntry: function (list) {
+        const cid = $("#add-list-entry-cid").val();
+        const description = $("#add-list-entry-description").val();
         $.ajax({
             url: "ajax.php",
             method: "post",
             data: {
                 "module": "callblocker",
-                "command": "updateWhitelistEntry",
+                "command": "addListEntry",
+                "list": list,
+                "cid": cid,
+                "description": description
+            },
+            success: function (data) {
+                $(`#${list}-table`).bootstrapTable('refresh');
+                $('#globalModal').modal('hide')
+            }
+        });
+    },
+    showEditListEntryDialog: function (list, id) {
+        const row = UCP.Modules.Callblocker.getListEntry(list, id);
+        const content = `
+               <div class="form-group">
+                   <label for="edit-list-entry-cid">CID</label>
+                   <input type="text" class="form-control" id="edit-list-entry-cid">
+               </div>
+               <div class="form-group">
+                   <label for="edit-list-entry-description">Description</label>
+                   <input type="text" class="form-control" id="edit-list-entry-description">
+               </div>
+           `;
+        const footer = `
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               <button type="button" class="btn btn-primary" onclick="UCP.Modules.Callblocker.updateListEntry('${list}',${row.id})">Update Entry</button>
+           `;
+        UCP.showDialog("Edit Entry", content, footer, function () {
+            const cid_input = $('#edit-list-entry-cid');
+            cid_input.val(row.cid);
+            $('#edit-list-entry-description').val(row.description);
+            cid_input.focus();
+        });
+    },
+    updateListEntry: function (list, id) {
+        const cid = $("#edit-list-entry-cid").val();
+        const description = $("#edit-list-entry-description").val();
+        $.ajax({
+            url: "ajax.php",
+            method: "post",
+            data: {
+                "module": "callblocker",
+                "command": "updateListEntry",
+                "list": list,
                 "id": id,
                 "cid": cid,
                 "description": description
             },
             success: function (data) {
-                $('#whitelistTable').bootstrapTable('refresh');
+                $(`#${list}-table`).bootstrapTable('refresh');
                 $('#globalModal').modal('hide')
             }
         });
