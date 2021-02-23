@@ -182,7 +182,8 @@ var CallblockerC = UCPMC.extend({
     getWhitelistEntry: function (id) {
         const data = $('#whitelistTable').bootstrapTable('getData');
         for (const row of data) {
-            if (row.id === id) {
+            // noinspection EqualityComparisonWithCoercionJS
+            if (row.id == id) {
                 return row;
             }
         }
