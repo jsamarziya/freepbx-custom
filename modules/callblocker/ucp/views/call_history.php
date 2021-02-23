@@ -26,7 +26,7 @@
     </table>
 </div>
 <script>
-    const clid_re = /"(.*)" &lt;(.*)%gt;/;
+    const clid_re = /"(.*)" <(.*)>/;
     const table = $('#call-history-table');
     table.on('load-success.bs.table', function (e, data) {
         for (let i = 0; i < data.rows.length; i++) {
