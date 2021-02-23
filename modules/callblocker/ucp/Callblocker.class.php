@@ -71,6 +71,16 @@ class Callblocker extends Modules {
             'list' => array() //List of Widgets this module provides
         );
         //Individual Widgets
+        $widget['list']['call_history'] = array(
+            'display' => _('Call History'), //Widget Subtitle
+            'description' => _('Call history'), //Widget description
+            'hasSettings' => false, //Set to true if this widget has settings. This will make the cog (gear) icon display on the widget display
+            'icon' => 'fa fa-phone', //If set the widget in on the side bar will use this icon instead of the category icon,
+            'dynamic' => false, //If set to true then this widget can be added multiple times, if false then this widget can only be added once per dashboard!,
+            'defaultsize' => array('height' => 9, 'width' => 8), //The default size of the widget when placed in the dashboard
+            'minsize' => array('height' => 2, 'width' => 2), //The minimum size a widget can be when resized on the dashboard
+            'noresize' => false //If set to true the widget will not be allowed to be resized
+        );
         $widget['list']['blacklist'] = array(
             'display' => _('Blacklist'), //Widget Subtitle
             'description' => _('List of banned callers'), //Widget description
@@ -120,6 +130,15 @@ class Callblocker extends Modules {
     public function getWidgetDisplay($id, $uuid) {
         $widget = array();
         switch ($id) {
+            case 'call_history':
+                $displayvars = array(
+                    'ext' => $this->getExtension()
+                );
+                $widget = array(
+                    'title' => _('Call History'), //widget name
+                    'html' => $this->load_view(__DIR__ . '/views/call_history.php', $displayvars)
+                );
+                break;
             case 'blacklist':
                 $displayvars = array(
                     'list' => 'blacklist'
@@ -253,6 +272,16 @@ class Callblocker extends Modules {
      */
     function ajaxCustomHandler() {
         return false;
+    }
+
+    function getExtension() {
+        $user = $this->UCP->User->getUser();
+        $extensions = $this->UCP->getCombinedSettingByID($user['id'], 'Cdr', 'assigned');
+        if (empty($extensions)) {
+            return null;
+        } else {
+            return $extensions[0];
+        }
     }
 
     function getMysqlConnection() {
