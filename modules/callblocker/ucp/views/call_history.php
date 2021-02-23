@@ -26,11 +26,16 @@
     </table>
 </div>
 <script>
+    const clid_re = /"(.*)" &lt;(.*)%gt;/;
     const table = $('#call-history-table');
     table.on('load-success.bs.table', function (e, data) {
         for (let i = 0; i < data.rows.length; i++) {
             const row = data.rows[i];
-            row.cid = "myCID";
+            const cid_parts = data.clid.match(clid_re);
+            if (cid_parts) {
+                row.cid = cid_parts[0];
+                row.description = cid_parts[1];
+            }
             table.bootstrapTable('updateRow', i, row);
         }
     });
