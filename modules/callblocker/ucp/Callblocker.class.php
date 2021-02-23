@@ -53,22 +53,6 @@ class Callblocker extends Modules {
      */
     public function getSimpleWidgetList() {
         return array();
-        //Category for the widgets
-//		$widget = array(
-//			"rawname" => "callblocker", //Module Rawname
-//			"display" => _("UCP Module callblocker"), //The Widget Main Title
-//			"icon" => "fa fa-globe", //The Widget Icon from http://fontawesome.io/icons/
-//			"list" => array() //List of Widgets this module provides
-//		);
-//		//Individual Widgets
-//		$widget['list']["willy"] = array(
-//			"display" => _("Willy the Widget"), //Widget Subtitle
-//			"description" => _("Willy dreamed of being a widget all of his life"), //Widget description
-//			"hasSettings" => true, //Set to true if this widget has settings. This will make the cog (gear) icon display on the widget display
-//			"icon" => "fa fa-male", //If set the widget in on the side bar will use this icon instead of the category icon,
-//			"dynamic" => true //If set to true then this widget can be added multiple times, if false then this widget can only be added once per dashboard!
-//		);
-//		return $widget;
     }
 
 
@@ -81,21 +65,31 @@ class Callblocker extends Modules {
      */
     public function getWidgetList() {
         $widget = array(
-            "rawname" => "callblocker", //Module Rawname
-            "display" => _("Call Blocker"), //The Widget Main Title
-            "icon" => "fa fa-ban", //The Widget Icon from http://fontawesome.io/icons/
-            "list" => array() //List of Widgets this module provides
+            'rawname' => 'callblocker', //Module Rawname
+            'display' => _('Call Blocker'), //The Widget Main Title
+            'icon' => 'fa fa-ban', //The Widget Icon from http://fontawesome.io/icons/
+            'list' => array() //List of Widgets this module provides
         );
         //Individual Widgets
-        $widget['list']["whitelist"] = array(
-            "display" => _("Whitelist"), //Widget Subtitle
-            "description" => _("List of allowed callers"), //Widget description
-            "hasSettings" => false, //Set to true if this widget has settings. This will make the cog (gear) icon display on the widget display
-            "icon" => "fa fa-list-ul", //If set the widget in on the side bar will use this icon instead of the category icon,
-            "dynamic" => false, //If set to true then this widget can be added multiple times, if false then this widget can only be added once per dashboard!,
-            "defaultsize" => array("height" => 9, "width" => 8), //The default size of the widget when placed in the dashboard
-            "minsize" => array("height" => 2, "width" => 2), //The minimum size a widget can be when resized on the dashboard
-            "noresize" => false //If set to true the widget will not be allowed to be resized
+        $widget['list']['blacklist'] = array(
+            'display' => _('Blacklist'), //Widget Subtitle
+            'description' => _('List of banned callers'), //Widget description
+            'hasSettings' => false, //Set to true if this widget has settings. This will make the cog (gear) icon display on the widget display
+            'icon' => 'fa fa-th-list', //If set the widget in on the side bar will use this icon instead of the category icon,
+            'dynamic' => false, //If set to true then this widget can be added multiple times, if false then this widget can only be added once per dashboard!,
+            'defaultsize' => array('height' => 9, 'width' => 8), //The default size of the widget when placed in the dashboard
+            'minsize' => array('height' => 2, 'width' => 2), //The minimum size a widget can be when resized on the dashboard
+            'noresize' => false //If set to true the widget will not be allowed to be resized
+        );
+        $widget['list']['whitelist'] = array(
+            'display' => _('Whitelist'), //Widget Subtitle
+            'description' => _('List of allowed callers'), //Widget description
+            'hasSettings' => false, //Set to true if this widget has settings. This will make the cog (gear) icon display on the widget display
+            'icon' => 'fa fa-list-ul', //If set the widget in on the side bar will use this icon instead of the category icon,
+            'dynamic' => false, //If set to true then this widget can be added multiple times, if false then this widget can only be added once per dashboard!,
+            'defaultsize' => array('height' => 9, 'width' => 8), //The default size of the widget when placed in the dashboard
+            'minsize' => array('height' => 2, 'width' => 2), //The minimum size a widget can be when resized on the dashboard
+            'noresize' => false //If set to true the widget will not be allowed to be resized
         );
         return $widget;
     }
@@ -111,24 +105,7 @@ class Callblocker extends Modules {
      * @return array Array of information
      */
     public function getSimpleWidgetDisplay($id, $uuid) {
-        $widget = array();
-        switch ($id) {
-            case "willy":
-                $displayvars = array(
-                    "name" => "Whilly", //widget name
-                    "timezone" => $this->UCP->View->getTimezone(), //User's Timezone, set in User Manager
-                    "locale" => $this->UCP->View->getLocale(), //User's Locale, set in User Manager
-                    "date" => $this->UCP->View->getDate(time()), //User's Date, set in User Manager
-                    "time" => $this->UCP->View->getTime(time()), //User's Time, set in User Manager
-                    "datetime" => $this->UCP->View->getDateTime(time()) //User's Date/Time, set in User Manager
-                );
-                $widget = array(
-                    'title' => _("Follow Me"),
-                    'html' => $this->load_view(__DIR__ . '/views/willy.php', $displayvars)
-                );
-                break;
-        }
-        return $widget;
+        return array();
     }
 
     /**
@@ -143,18 +120,22 @@ class Callblocker extends Modules {
     public function getWidgetDisplay($id, $uuid) {
         $widget = array();
         switch ($id) {
-            case "whitelist":
+            case 'blacklist':
                 $displayvars = array(
-                    "name" => "Whilly", //widget name
-                    "timezone" => $this->UCP->View->getTimezone(), //User's Timezone, set in User Manager
-                    "locale" => $this->UCP->View->getLocale(), //User's Locale, set in User Manager
-                    "date" => $this->UCP->View->getDate(time()), //User's Date, set in User Manager
-                    "time" => $this->UCP->View->getTime(time()), //User's Time, set in User Manager
-                    "datetime" => $this->UCP->View->getDateTime(time()) //User's Date/Time, set in User Manager
+                    'list' => 'blacklist'
                 );
                 $widget = array(
-                    'title' => _("Willy Module"), //widget name
-                    'html' => $this->load_view(__DIR__ . '/views/whitelist.php', $displayvars)
+                    'title' => _('Blacklist'), //widget name
+                    'html' => $this->load_view(__DIR__ . '/views/list.php', $displayvars)
+                );
+                break;
+            case 'whitelist':
+                $displayvars = array(
+                    'list' => 'whitelist'
+                );
+                $widget = array(
+                    'title' => _('Whitelist'), //widget name
+                    'html' => $this->load_view(__DIR__ . '/views/list.php', $displayvars)
                 );
                 break;
         }
@@ -171,25 +152,7 @@ class Callblocker extends Modules {
      * @return array Array of information
      */
     public function getWidgetSettingsDisplay($id, $uuid) {
-        $displayvars = array();
-        $widget = array();
-        switch ($id) {
-            case "willy":
-                $displayvars = array(
-                    "name" => "Whilly", //widget name
-                    "timezone" => $this->UCP->View->getTimezone(), //User's Timezone, set in User Manager
-                    "locale" => $this->UCP->View->getLocale(), //User's Locale, set in User Manager
-                    "date" => $this->UCP->View->getDate(time()), //User's Date, set in User Manager
-                    "time" => $this->UCP->View->getTime(time()), //User's Time, set in User Manager
-                    "datetime" => $this->UCP->View->getDateTime(time()) //User's Date/Time, set in User Manager
-                );
-                $widget = array(
-                    'title' => _("Whilly Module"), //widget name
-                    'html' => $this->load_view(__DIR__ . '/views/willy.php', $displayvars)
-                );
-                break;
-        }
-        return $widget;
+        return array();
     }
 
     /**
@@ -202,25 +165,7 @@ class Callblocker extends Modules {
      * @return array Array of information
      */
     public function getSimpleWidgetSettingsDisplay($id, $uuid) {
-        $displayvars = array();
-        $widget = array();
-        switch ($id) {
-            case "willy":
-                $displayvars = array(
-                    "name" => "Whilly", //widget name
-                    "timezone" => $this->UCP->View->getTimezone(), //User's Timezone, set in User Manager
-                    "locale" => $this->UCP->View->getLocale(), //User's Locale, set in User Manager
-                    "date" => $this->UCP->View->getDate(time()), //User's Date, set in User Manager
-                    "time" => $this->UCP->View->getTime(time()), //User's Time, set in User Manager
-                    "datetime" => $this->UCP->View->getDateTime(time()) //User's Date/Time, set in User Manager
-                );
-                $widget = array(
-                    'title' => _("Follow Me"), //widget name
-                    'html' => $this->load_view(__DIR__ . '/views/willy.php', $displayvars)
-                );
-                break;
-        }
-        return $widget;
+        return array();
     }
 
     /**
@@ -232,20 +177,6 @@ class Callblocker extends Modules {
      */
     function getUserSettingsDisplay() {
         return array();
-//        $displayvars = array(
-//            "timezone" => $this->UCP->View->getTimezone(), //User's Timezone, set in User Manager
-//            "locale" => $this->UCP->View->getLocale(), //User's Locale, set in User Manager
-//            "date" => $this->UCP->View->getDate(time()), //User's Date, set in User Manager
-//            "time" => $this->UCP->View->getTime(time()), //User's Time, set in User Manager
-//            "datetime" => $this->UCP->View->getDateTime(time()) //User's Date/Time, set in User Manager
-//        );
-//        return array(
-//            array(
-//                "rawname" => "callblocker", // Module rawname
-//                "name" => _("callblocker Settings"), //The Tab's Title
-//                'html' => $this->load_view(__DIR__ . '/views/user_settings.php', $displayvars)
-//            )
-//        );
     }
 
 
@@ -259,12 +190,7 @@ class Callblocker extends Modules {
      */
     public function poll($data) {
         $items = array();
-        if (is_array($data)) {
-            foreach ($data as $id => $value) {
-                $items[$id] = $value * 2;
-            }
-        }
-        return array("status" => true, "items" => $items);
+        return array('status' => true, 'items' => $items);
     }
 
 
@@ -279,10 +205,10 @@ class Callblocker extends Modules {
      */
     public function ajaxRequest($command, $settings) {
         switch ($command) {
-            case 'grid':
-            case 'addWhitelistEntry':
-            case 'updateWhitelistEntry':
-            case 'deleteWhitelistEntry':
+            case 'getList':
+            case 'addListEntry':
+            case 'updateListEntry':
+            case 'deleteListEntry':
                 return true;
             default:
                 return false;
@@ -299,17 +225,17 @@ class Callblocker extends Modules {
      */
     public function ajaxHandler() {
         switch ($_REQUEST['command']) {
-            case 'grid':
-                return $this->getWhitelist();
+            case 'getList':
+                return $this->getList($_REQUEST['list']);
                 break;
-            case 'addWhitelistEntry':
-                return $this->addWhitelistEntry($_REQUEST['cid'], $_REQUEST['description']);
+            case 'addListEntry':
+                return $this->addListEntry($_REQUEST['list'], $_REQUEST['cid'], $_REQUEST['description']);
                 break;
-            case 'updateWhitelistEntry':
-                return $this->updateWhitelistEntry($_REQUEST['id'], $_REQUEST['cid'], $_REQUEST['description']);
+            case 'updateListEntry':
+                return $this->updateListEntry($_REQUEST['list'], $_REQUEST['id'], $_REQUEST['cid'], $_REQUEST['description']);
                 break;
-            case 'deleteWhitelistEntry':
-                return $this->deleteWhitelistEntry($_REQUEST['id']);
+            case 'deleteListEntry':
+                return $this->deleteListEntry($_REQUEST['list'], $_REQUEST['id']);
                 break;
             default:
                 return false;
@@ -329,54 +255,65 @@ class Callblocker extends Modules {
         return false;
     }
 
-    function get_mysql_connection() {
+    function getMysqlConnection() {
         include '/etc/callblocker.conf';
         /** @noinspection PhpUndefinedVariableInspection */
         $mysqli = new \mysqli($servername, $username, $password);
         if ($mysqli->connect_error) {
-            throw new \Exception("Connect failed: " . $mysqli->connect_error);
+            throw new \Exception('Connect failed: ' . $mysqli->connect_error);
         }
         return $mysqli;
     }
 
-    function getWhitelist() {
-        $mysqli = $this->get_mysql_connection();
-        $whitelist = [];
-        $query = "SELECT id, cid_number AS cid, description FROM callblocker.whitelist";
+    function validateList($list) {
+        if ($list == 'blacklist' or $list == 'whitelist') {
+            return;
+        }
+        throw new \Exception('invalid list');
+    }
+
+    function getList($list) {
+        $this->validateList($list);
+        $mysqli = $this->getMysqlConnection();
+        $entries = [];
+        $query = "SELECT id, cid_number AS cid, description FROM callblocker.${list}";
         if ($result = $mysqli->query($query)) {
             while ($row = $result->fetch_assoc()) {
-                $whitelist[] = $row;
+                $entries[] = $row;
             }
             $result->close();
         }
         $mysqli->close();
-        return $whitelist;
+        return $entries;
     }
 
-    function addWhitelistEntry($cid, $description) {
-        $mysqli = $this->get_mysql_connection();
-        if ($stmt = $mysqli->prepare("INSERT INTO callblocker.whitelist (cid_number, description) VALUES (?, ?)")) {
-            $stmt->bind_param("ss", $cid, $description);
+    function addListEntry($list, $cid, $description) {
+        $this->validateList($list);
+        $mysqli = $this->getMysqlConnection();
+        if ($stmt = $mysqli->prepare("INSERT INTO callblocker.${list} (cid_number, description) VALUES (?, ?)")) {
+            $stmt->bind_param('ss', $cid, $description);
             $stmt->execute();
             $stmt->close();
         }
         $mysqli->close();
     }
 
-    function updateWhitelistEntry($id, $cid, $description) {
-        $mysqli = $this->get_mysql_connection();
-        if ($stmt = $mysqli->prepare("UPDATE callblocker.whitelist SET cid_number=?, description=? WHERE id=?")) {
-            $stmt->bind_param("ssi", $cid, $description, $id);
+    function updateListEntry($list, $id, $cid, $description) {
+        $this->validateList($list);
+        $mysqli = $this->getMysqlConnection();
+        if ($stmt = $mysqli->prepare("UPDATE callblocker.${list} SET cid_number=?, description=? WHERE id=?")) {
+            $stmt->bind_param('ssi', $cid, $description, $id);
             $stmt->execute();
             $stmt->close();
         }
         $mysqli->close();
     }
 
-    function deleteWhitelistEntry($id) {
-        $mysqli = $this->get_mysql_connection();
-        if ($stmt = $mysqli->prepare("DELETE FROM callblocker.whitelist WHERE id=?")) {
-            $stmt->bind_param("i", $id);
+    function deleteListEntry($list, $id) {
+        $this->validateList($list);
+        $mysqli = $this->getMysqlConnection();
+        if ($stmt = $mysqli->prepare("DELETE FROM callblocker.${list} WHERE id=?")) {
+            $stmt->bind_param('i', $id);
             $stmt->execute();
             $stmt->close();
         }
