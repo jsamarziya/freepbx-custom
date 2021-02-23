@@ -225,20 +225,20 @@ class Callblocker extends Modules {
      */
     function getUserSettingsDisplay() {
         return array();
-        $displayvars = array(
-            "timezone" => $this->UCP->View->getTimezone(), //User's Timezone, set in User Manager
-            "locale" => $this->UCP->View->getLocale(), //User's Locale, set in User Manager
-            "date" => $this->UCP->View->getDate(time()), //User's Date, set in User Manager
-            "time" => $this->UCP->View->getTime(time()), //User's Time, set in User Manager
-            "datetime" => $this->UCP->View->getDateTime(time()) //User's Date/Time, set in User Manager
-        );
-        return array(
-            array(
-                "rawname" => "callblocker", // Module rawname
-                "name" => _("callblocker Settings"), //The Tab's Title
-                'html' => $this->load_view(__DIR__ . '/views/user_settings.php', $displayvars)
-            )
-        );
+//        $displayvars = array(
+//            "timezone" => $this->UCP->View->getTimezone(), //User's Timezone, set in User Manager
+//            "locale" => $this->UCP->View->getLocale(), //User's Locale, set in User Manager
+//            "date" => $this->UCP->View->getDate(time()), //User's Date, set in User Manager
+//            "time" => $this->UCP->View->getTime(time()), //User's Time, set in User Manager
+//            "datetime" => $this->UCP->View->getDateTime(time()) //User's Date/Time, set in User Manager
+//        );
+//        return array(
+//            array(
+//                "rawname" => "callblocker", // Module rawname
+//                "name" => _("callblocker Settings"), //The Tab's Title
+//                'html' => $this->load_view(__DIR__ . '/views/user_settings.php', $displayvars)
+//            )
+//        );
     }
 
 
@@ -315,16 +315,12 @@ class Callblocker extends Modules {
      * @return mixed Output if success, otherwise false will generate a 500 error serverside
      */
     function ajaxCustomHandler() {
-        switch ($_REQUEST['command']) {
-            default:
-                return false;
-                break;
-        }
         return false;
     }
 
     function get_mysql_connection() {
         include '/etc/callblocker.conf';
+        /** @noinspection PhpUndefinedVariableInspection */
         $mysqli = new \mysqli($servername, $username, $password);
         if ($mysqli->connect_error) {
             throw new \Exception("Connect failed: " . $mysqli->connect_error);
