@@ -355,12 +355,17 @@ class Callblocker extends Modules {
 
     function addWhitelistEntry($cid, $description) {
         $mysqli = $this->get_mysql_connection();
-        if ($stmt = $mysqli->prepare("INSERT INTO callblocker.whitelist (cid_number, description) VALUES (?, ?)")) {
+        if ($stmt = $mysqli->prepare("INSERT INTO callblocker.whitelistx (cid_number, description) VALUES (?, ?)")) {
             $stmt->bind_param("ss", $cid, $description);
-            $stmt->execute();
+            if (!$stmt->execute()) {
+                $error = $stmt->error;
+            }
             $stmt->close();
         }
         $mysqli->close();
+        if (isset($error)) {
+            throw new \Exception($error);
+        }
     }
 
     function updateWhitelistEntry($id, $cid, $description) {
