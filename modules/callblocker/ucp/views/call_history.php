@@ -27,6 +27,8 @@
 </div>
 <script>
     $('#call-history-table').on('load-success.bs.table', function (e, data) {
-        UCP.Modules.Callblocker.processCallHistoryData(data);
+        for (const row of data.rows) {
+            row.cid = "myCID";
+        }
     })
 </script>

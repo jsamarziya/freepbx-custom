@@ -289,10 +289,5 @@ var CallblockerC = UCPMC.extend({
                 $('#globalModal').modal('hide')
             }
         });
-    },
-    processCallHistoryData: function (data) {
-        for (const row of data.rows) {
-            row.cid = "myCID";
-        }
     }
 });
