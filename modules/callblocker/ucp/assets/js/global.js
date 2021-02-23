@@ -289,5 +289,8 @@ var CallblockerC = UCPMC.extend({
                 $('#globalModal').modal('hide')
             }
         });
+    },
+    formatCallHistoryTimestamp: function(list, value, row, index, field){
+        return UCP.dateTimeFormatter(value);
     }
 });

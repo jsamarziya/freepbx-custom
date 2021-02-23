@@ -15,7 +15,10 @@
     >
         <thead>
         <tr>
-            <th data-field="timestamp" data-sortable="true" data-width="10%">Date</th>
+            <th data-field="timestamp" data-sortable="true" data-width="10%"
+                data-formatter="UCP.Modules.Callblocker.formatCallHistoryTimestamp">
+                Date
+            </th>
             <th data-field="cid" data-sortable="true" data-width="10%">CID</th>
             <th data-field="description" data-sortable="true">Description</th>
             <th data-field="duration" data-sortable="true" data-width="10%">Duration</th>
