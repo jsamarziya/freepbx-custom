@@ -410,7 +410,9 @@ SELECT
     cdr.duration AS duration,
     cdr.userfield AS disposition,
     blacklist.cid_number IS NOT NULL AS blacklisted,
-    whitelist.cid_number IS NOT NULL AS whitelisted
+    blacklist.description AS blacklistDescription,
+    whitelist.cid_number IS NOT NULL AS whitelisted,
+    whitelist.description AS whitelistDescription
 FROM
     asteriskcdrdb.cdr cdr
         LEFT JOIN
@@ -434,7 +436,10 @@ EOT;
         $calls = [];
         if ($stmt) {
             $stmt->execute();
-            $stmt->bind_result($timestamp, $cid, $clid, $duration, $disposition, $blacklisted, $whitelisted);
+            $stmt->bind_result(
+                $timestamp, $cid, $clid, $duration, $disposition, $blacklisted, $blacklistDescription, $whitelisted,
+                $whitelistDescription
+            );
             while ($stmt->fetch()) {
                 $calls[] = array(
                     'timestamp' => $timestamp,
@@ -443,7 +448,9 @@ EOT;
                     'duration' => $duration,
                     'disposition' => $disposition,
                     'blacklisted' => $blacklisted == 1,
-                    'whitelisted' => $whitelisted == 1
+                    'blacklistDescription' => $blacklistDescription,
+                    'whitelisted' => $whitelisted == 1,
+                    'whitelistDescription' => $whitelistDescription
                 );
             }
             $stmt->close();
@@ -462,6 +469,16 @@ EOT;
             $call['formattedTime'] = $this->UCP->View->getDateTime($call['timestamp']);
             $call['description'] = trim(preg_replace('/ <.*>$/', '', $call['clid']), '"');
             unset($call['clid']);
+            if (!is_null($call['whitelistDescription'])) {
+                $altDescription = $call['whitelistDescription'];
+            } elseif (!is_null($call['blacklistDescription'])) {
+                $altDescription = $call['blacklistDescription'];
+            } else {
+                $altDescription = null;
+            }
+            $call['altDescription'] = $altDescription;
+            unset($call['whitelistDescription']);
+            unset($call['blacklistDescription']);
         }
         return $calls;
     }

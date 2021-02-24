@@ -295,7 +295,7 @@ var CallblockerC = UCPMC.extend({
     },
     formatCallHistoryDescription: function (value, row, index, field) {
         const description = new Option(row.description).innerHTML;
-        const listDescription = "blargh";
+        const listDescription = new Option(row.altDescription).innerHTML;
         return `<span title="${listDescription}">${description}</span>`;
     },
     formatCallHistoryDuration: function (value, row, index, field) {
