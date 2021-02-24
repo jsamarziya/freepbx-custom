@@ -25,7 +25,7 @@
                 data-formatter="UCP.Modules.Callblocker.formatCallHistoryDuration">
                 Duration
             </th>
-            <th data-field="userfield" data-sortable="true"
+            <th data-field="disposition" data-sortable="true"
                 data-formatter="UCP.Modules.Callblocker.formatCallHistoryDisposition">
                 Disposition
             </th>
