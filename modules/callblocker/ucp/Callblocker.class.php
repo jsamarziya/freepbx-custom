@@ -30,16 +30,8 @@ class Callblocker extends Modules {
     protected $module = 'Callblocker';
 
     public function __construct($Modules) {
-        //User information. Returned as an array. See:
+        //User information. Returned as an array.
         $this->user = $this->UCP->User->getUser();
-        //Access any FreePBX enabled module or BMO object
-        $core = $this->UCP->FreePBX->Core;
-        //Access any UCP Function.
-        $ucp = $this->UCP;
-        //Access any UCP module
-        $modules = $this->Modules = $Modules;
-        //Asterisk Manager. See: https://wiki.freepbx.org/display/FOP/Asterisk+Manager+Class
-        $this->astman = $this->UCP->FreePBX->astman;
         //Setting retrieved from the UCP Interface in User Manager in Admin
         $this->enabled = $this->UCP->getCombinedSettingByID($this->user['id'], $this->module, 'enabled');
     }
@@ -55,7 +47,6 @@ class Callblocker extends Modules {
         return array();
     }
 
-
     /**
      * Get Widget List
      *
@@ -70,7 +61,6 @@ class Callblocker extends Modules {
             'icon' => 'fa fa-ban', //The Widget Icon from http://fontawesome.io/icons/
             'list' => array() //List of Widgets this module provides
         );
-        //Individual Widgets
         $widget['list']['call_history'] = array(
             'display' => _('Call History'), //Widget Subtitle
             'description' => _('Call history'), //Widget description
@@ -104,7 +94,6 @@ class Callblocker extends Modules {
         return $widget;
     }
 
-
     /**
      * Get Simple Widget Display
      *
@@ -135,7 +124,7 @@ class Callblocker extends Modules {
                     'ext' => $this->getExtension()
                 );
                 $widget = array(
-                    'title' => _('Call History'), //widget name
+                    'title' => _('Call History'),
                     'html' => $this->load_view(__DIR__ . '/views/call_history.php', $displayvars)
                 );
                 break;
@@ -144,7 +133,7 @@ class Callblocker extends Modules {
                     'list' => 'blacklist'
                 );
                 $widget = array(
-                    'title' => _('Blacklist'), //widget name
+                    'title' => _('Blacklist'),
                     'html' => $this->load_view(__DIR__ . '/views/list.php', $displayvars)
                 );
                 break;
@@ -153,7 +142,7 @@ class Callblocker extends Modules {
                     'list' => 'whitelist'
                 );
                 $widget = array(
-                    'title' => _('Whitelist'), //widget name
+                    'title' => _('Whitelist'),
                     'html' => $this->load_view(__DIR__ . '/views/list.php', $displayvars)
                 );
                 break;
@@ -198,7 +187,6 @@ class Callblocker extends Modules {
         return array();
     }
 
-
     /**
      * Poll for information
      *
@@ -211,7 +199,6 @@ class Callblocker extends Modules {
         $items = array();
         return array('status' => true, 'items' => $items);
     }
-
 
     /**
      * Ajax Request
@@ -261,7 +248,6 @@ class Callblocker extends Modules {
                 break;
         }
     }
-
 
     /**
      * The Handler for unprocessed commands
