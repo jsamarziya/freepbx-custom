@@ -289,5 +289,24 @@ var CallblockerC = UCPMC.extend({
                 $('#globalModal').modal('hide')
             }
         });
+    },
+    formatCallHistoryTimestamp: function (value, row, index, field) {
+        return UCP.dateTimeFormatter(value);
+    },
+    formatCallHistoryDuration: function (value, row, index, field) {
+        return row.niceDuration;
+    },
+    formatCallHistoryDisposition: function (value, row, index, field) {
+        let cls;
+        if (value === "ACCEPTED") {
+            cls = "label-success";
+        } else if (value === "BLOCKED") {
+            cls = "label-warning";
+        } else if (value === "BLACKLISTED") {
+            cls = "label-danger";
+        } else {
+            cls = "label-default";
+        }
+        return `<span class="label ${cls}">${value}</span>`;
     }
 });
