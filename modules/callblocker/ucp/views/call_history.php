@@ -18,20 +18,23 @@
         <thead>
         <tr>
             <th data-field="timestamp" data-sortable="true"
-                data-formatter="UCP.Modules.Callblocker.formatCallHistoryTimestamp">
+                data-formatter="UCP.Modules.Callblocker.formatCallHistoryTimestamp"
+            >
                 Date
             </th>
             <th data-field="cid" data-sortable="true">CID</th>
             <th data-field="description" data-sortable="true">Description</th>
             <th data-field="duration" data-sortable="true"
-                data-formatter="UCP.Modules.Callblocker.formatCallHistoryDuration">
+                data-formatter="UCP.Modules.Callblocker.formatCallHistoryDuration"
+            >
                 Duration
             </th>
             <th data-field="disposition" data-sortable="true"
-                data-formatter="UCP.Modules.Callblocker.formatCallHistoryDisposition">
+                data-formatter="UCP.Modules.Callblocker.formatCallHistoryDisposition"
+            >
                 Disposition
             </th>
-            <th class="text-nowrap">Controls</th>
+            <th class="text-nowrap" data-formatter="UCP.Modules.Callblocker.formatCallHistoryControls>Controls</th>
         </tr>
         </thead>
     </table>
