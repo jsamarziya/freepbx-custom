@@ -441,7 +441,7 @@ class Callblocker extends Modules {
                 $call['niceDuration'] = sprintf(_('%s sec'), $call['duration']);
             }
             $call['formattedTime'] = $this->UCP->View->getDateTime($call['timestamp']);
-            $call['description'] = preg_replace('/ <.*>$/', '', $call['clid']);
+            $call['description'] = trim(preg_replace('/ <.*>$/', '', $call['clid']), '"');
         }
         return $calls;
     }
