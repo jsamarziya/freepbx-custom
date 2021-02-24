@@ -213,7 +213,7 @@ var CallblockerC = UCPMC.extend({
             }
         });
     },
-    showAddListEntryDialog: function (list) {
+    showAddListEntryDialog: function (list, table, cid, description) {
         const content = `
                <div class="form-group">
                    <label for="add-list-entry-cid">CID</label>
@@ -226,13 +226,16 @@ var CallblockerC = UCPMC.extend({
            `;
         const footer = `
                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-               <button type="button" class="btn btn-primary" onclick="UCP.Modules.Callblocker.addListEntry('${list}')">Add Entry</button>
+               <button type="button" class="btn btn-primary" onclick="UCP.Modules.Callblocker.addListEntry('${list}','${table}')">Add Entry</button>
            `;
         UCP.showDialog("Add Entry", content, footer, function () {
-            $('#add-list-entry-cid').focus();
+            const cid_input = $('#add-list-entry-cid');
+            cid_input.val(cid);
+            $('#add-list-entry-description').val(description);
+            cid_input.focus();
         });
     },
-    addListEntry: function (list) {
+    addListEntry: function (list, table) {
         const cid = $("#add-list-entry-cid").val();
         const description = $("#add-list-entry-description").val();
         $.ajax({
@@ -246,7 +249,7 @@ var CallblockerC = UCPMC.extend({
                 "description": description
             },
             success: function (data) {
-                $(`#${list}-table`).bootstrapTable('refresh');
+                $(`#${table}`).bootstrapTable('refresh');
                 $('#globalModal').modal('hide')
             }
         });
@@ -329,11 +332,12 @@ var CallblockerC = UCPMC.extend({
             return "";
         }
         return `
-            <a title="Add to whitelist" onclick="UCP.Modules.Callblocker.addToList('whitelist',${index})"><i class="fa fa-check"></i></a>
-            <a title="Add to blacklist" onclick="UCP.Modules.Callblocker.addToList('blacklist',${index})"><i class="fa fa-ban"></i></a>
+            <a title="Add to whitelist" onclick="UCP.Modules.Callblocker.addCallToList('whitelist',${index})"><i class="fa fa-check"></i></a>
+            <a title="Add to blacklist" onclick="UCP.Modules.Callblocker.addCallToList('blacklist',${index})"><i class="fa fa-ban"></i></a>
         `;
     },
-    addToList: function (list, id) {
-        alert(`add to ${list}`);
+    addCallToList: function (list, index) {
+        const entry = UCP.Modules.Callblocker.getCallHistoryEntry(index);
+        UCP.Modules.Callblocker.showAddListEntryDialog(list, 'call-history-table', entry.cid, entry.description);
     }
 });
