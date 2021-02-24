@@ -318,11 +318,9 @@ var CallblockerC = UCPMC.extend({
     //     `;
     // },
     formatCallHistoryControls: function (value, row, index, field) {
-        const whitelist_disabled = row.whitelisted ? 'disabled' : '';
-        const blacklist_disabled = row.blacklisted ? 'disabled' : '';
         return `
-            <a role="button" class="${whitelist_disabled}" title="Add to whitelist" onclick="UCP.Modules.Callblocker.addToList('whitelist',${index})"><i class="fa fa-check"></i></a> 
-            <a role="button" class="${blacklist_disabled}" title="Add to blacklist" onclick="UCP.Modules.Callblocker.addToList('blacklist',${index})"><i class="fa fa-ban"></i></a> 
+            <a role="button" ${row.whitelisted ? 'class="disabled" disabled="disabled"' : ""} title="Add to whitelist" onclick="UCP.Modules.Callblocker.addToList('whitelist',${index})"><i class="fa fa-check"></i></a> 
+            <a role="button" ${row.blacklisted ? 'class="disabled" disabled="disabled"' : ""} title="Add to blacklist" onclick="UCP.Modules.Callblocker.addToList('blacklist',${index})"><i class="fa fa-ban"></i></a> 
         `;
     },
     addToList: function (list, id) {
