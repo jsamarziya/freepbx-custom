@@ -309,18 +309,10 @@ var CallblockerC = UCPMC.extend({
         }
         return `<span class="label ${cls}">${value}</span>`;
     },
-    // formatCallHistoryControls: function (value, row, index, field) {
-    //     const whitelist_disabled = row.whitelisted ? 'disabled="disabled"' : '';
-    //     const blacklist_disabled = row.blacklisted ? 'disabled="disabled"' : '';
-    //     return `
-    //         <button type="button" class="btn btn-link" title="Add to whitelist" onclick="UCP.Modules.Callblocker.addToList('whitelist',${index})" ${whitelist_disabled}><i class="fa fa-check"></i></button>
-    //         <button type="button" class="btn btn-link" title="Add to blacklist" onclick="UCP.Modules.Callblocker.addToList('blacklist',${index})" ${blacklist_disabled}><i class="fa fa-ban"></i></button>
-    //     `;
-    // },
     formatCallHistoryControls: function (value, row, index, field) {
         let wl, bl;
         if (row.whitelisted) {
-            wl = '<span class="text-muted" style="cursor: not-allowed;" title="Add to whitelist"><i class="fa fa-check"></i></span>';
+            wl = '<span style="cursor: not-allowed;" title="Add to whitelist"><i class="fa fa-check"></i></span>';
         } else {
             wl = `<a class="text-success" title="Add to whitelist" onclick="UCP.Modules.Callblocker.addToList(\'whitelist\',${index})"><i class="fa fa-check"></i></a>`;
         }
