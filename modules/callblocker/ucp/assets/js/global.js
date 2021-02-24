@@ -295,5 +295,18 @@ var CallblockerC = UCPMC.extend({
     },
     formatCallHistoryDuration: function (value, row, index, field) {
         return row.niceDuration;
+    },
+    formatCallHistoryDisposition: function (value, row, index, field) {
+        let cls;
+        if (value === "ACCEPTED") {
+            cls = "text-success";
+        } else if (value === "BLOCKED") {
+            cls = "text-warning";
+        } else if (value === "BLACKLISTED") {
+            cls = "text-danger";
+        } else {
+            cls = "";
+        }
+        return `<span class="${cls}">${value}</span>`;
     }
 });
