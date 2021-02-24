@@ -318,10 +318,17 @@ var CallblockerC = UCPMC.extend({
     //     `;
     // },
     formatCallHistoryControls: function (value, row, index, field) {
-        return `
-            <a role="button" ${row.whitelisted ? 'class="disabled" disabled="disabled"' : ""} title="Add to whitelist" onclick="UCP.Modules.Callblocker.addToList('whitelist',${index})"><i class="fa fa-check"></i></a> 
-            <a role="button" ${row.blacklisted ? 'class="disabled" disabled="disabled"' : ""} title="Add to blacklist" onclick="UCP.Modules.Callblocker.addToList('blacklist',${index})"><i class="fa fa-ban"></i></a> 
-        `;
+        if (row.whitelisted) {
+            const wl = '<span class="text-muted" title="Add to whitelist"><i class="fa fa-check"></i></span>';
+        } else {
+            const wl = `<a role="button" class="text-success" title="Add to whitelist" onclick="UCP.Modules.Callblocker.addToList(\'whitelist\',${index})"><i class="fa fa-check"></i></a>`;
+        }
+        if (row.blacklisted) {
+            const bl = '<span class="text-muted" title="Add to blacklist"><i class="fa fa-ban"></i></span>';
+        } else {
+            const bl = `<a role="button" class="text-danger" title="Add to blacklist" onclick="UCP.Modules.Callblocker.addToList(\'blacklist\',${index})"><i class="fa fa-ban"></i></a>`;
+        }
+        return `${wl} ${bl}`;
     },
     addToList: function (list, id) {
         alert(`add to ${list}`);
