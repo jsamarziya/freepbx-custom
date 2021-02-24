@@ -1,7 +1,7 @@
 <div class="col-md-12">
     <div id="<?php echo $list ?>-toolbar">
         <button class="btn btn-primary" title="Add Entry"
-                onclick="UCP.Modules.Callblocker.showAddListEntryDialog('<?php echo $list ?>')">
+                onclick="UCP.Modules.Callblocker.showAddListEntryDialog('<?php echo $list ?>', '<?php echo $list ?>-table')">
             <i class="fa fa-plus-circle"></i> Add
         </button>
     </div>

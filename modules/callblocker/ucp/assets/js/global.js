@@ -195,6 +195,10 @@ var CallblockerC = UCPMC.extend({
         }
         return null;
     },
+    getCallHistoryEntry: function (index) {
+        const data = $('#call-history-table').bootstrapTable('getData');
+        return data[index];
+    },
     deleteListEntry: function (list, id) {
         $.ajax({
             url: "ajax.php",
@@ -209,7 +213,7 @@ var CallblockerC = UCPMC.extend({
             }
         });
     },
-    showAddListEntryDialog: function (list) {
+    showAddListEntryDialog: function (list, table, title = 'Add Entry', cid, description) {
         const content = `
                <div class="form-group">
                    <label for="add-list-entry-cid">CID</label>
@@ -222,13 +226,16 @@ var CallblockerC = UCPMC.extend({
            `;
         const footer = `
                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-               <button type="button" class="btn btn-primary" onclick="UCP.Modules.Callblocker.addListEntry('${list}')">Add Entry</button>
+               <button type="button" class="btn btn-primary" onclick="UCP.Modules.Callblocker.addListEntry('${list}','${table}')">Add Entry</button>
            `;
-        UCP.showDialog("Add Entry", content, footer, function () {
-            $('#add-list-entry-cid').focus();
+        UCP.showDialog(title, content, footer, function () {
+            const cid_input = $('#add-list-entry-cid');
+            cid_input.val(cid);
+            $('#add-list-entry-description').val(description);
+            cid_input.focus();
         });
     },
-    addListEntry: function (list) {
+    addListEntry: function (list, table) {
         const cid = $("#add-list-entry-cid").val();
         const description = $("#add-list-entry-description").val();
         $.ajax({
@@ -242,7 +249,7 @@ var CallblockerC = UCPMC.extend({
                 "description": description
             },
             success: function (data) {
-                $(`#${list}-table`).bootstrapTable('refresh');
+                $(`#${table}`).bootstrapTable('refresh');
                 $('#globalModal').modal('hide')
             }
         });
@@ -293,6 +300,17 @@ var CallblockerC = UCPMC.extend({
     formatCallHistoryTimestamp: function (value, row, index, field) {
         return UCP.dateTimeFormatter(value);
     },
+    formatCallHistoryDescription: function (value, row, index, field) {
+        const description = new Option(row.description).innerHTML;
+        const altDescription = row.altDescription;
+        let title;
+        if (altDescription == null) {
+            title = "";
+        } else {
+            title = `title="${new Option(altDescription).innerHTML}"`;
+        }
+        return `<span ${title}>${description}</span>`;
+    },
     formatCallHistoryDuration: function (value, row, index, field) {
         return row.niceDuration;
     },
@@ -308,5 +326,18 @@ var CallblockerC = UCPMC.extend({
             cls = "label-default";
         }
         return `<span class="label ${cls}">${value}</span>`;
+    },
+    formatCallHistoryControls: function (value, row, index, field) {
+        if (row.whitelisted || row.blacklisted) {
+            return "";
+        }
+        return `
+            <a title="Add to whitelist" onclick="UCP.Modules.Callblocker.addCallToList('whitelist','Whitelist',${index})"><i class="fa fa-check"></i></a>
+            <a title="Add to blacklist" onclick="UCP.Modules.Callblocker.addCallToList('blacklist','Blacklist',${index})"><i class="fa fa-ban"></i></a>
+        `;
+    },
+    addCallToList: function (list, description, index) {
+        const entry = UCP.Modules.Callblocker.getCallHistoryEntry(index);
+        UCP.Modules.Callblocker.showAddListEntryDialog(list, 'call-history-table', `Add ${description} Entry`, entry.cid, entry.description);
     }
 });

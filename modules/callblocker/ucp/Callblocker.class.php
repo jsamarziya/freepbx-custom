@@ -402,7 +402,26 @@ class Callblocker extends Modules {
                 break;
         }
         $order = ($order == 'desc') ? 'desc' : 'asc';
-        $query = 'SELECT UNIX_TIMESTAMP(calldate) AS timestamp, src AS cid, clid, duration, userfield AS disposition FROM asteriskcdrdb.cdr WHERE dst=?';
+        $query = <<<'EOT'
+SELECT 
+    UNIX_TIMESTAMP(cdr.calldate) AS timestamp,
+    cdr.src AS cid,
+    cdr.clid AS clid,
+    cdr.duration AS duration,
+    cdr.userfield AS disposition,
+    blacklist.cid_number IS NOT NULL AS blacklisted,
+    blacklist.description AS blacklistDescription,
+    whitelist.cid_number IS NOT NULL AS whitelisted,
+    whitelist.description AS whitelistDescription
+FROM
+    asteriskcdrdb.cdr cdr
+        LEFT JOIN
+    callblocker.blacklist blacklist ON cdr.src = blacklist.cid_number COLLATE utf8mb4_general_ci
+        LEFT JOIN
+    callblocker.whitelist whitelist ON cdr.src = whitelist.cid_number COLLATE utf8mb4_general_ci
+WHERE
+    dst = ?
+EOT;
         $query_suffix = "ORDER BY $order_by ${order} LIMIT ?,?";
         if (!empty($search)) {
             if ($stmt = $mysqli->prepare("${query} AND clid LIKE ? ${query_suffix}")) {
@@ -417,14 +436,21 @@ class Callblocker extends Modules {
         $calls = [];
         if ($stmt) {
             $stmt->execute();
-            $stmt->bind_result($timestamp, $cid, $clid, $duration, $disposition);
+            $stmt->bind_result(
+                $timestamp, $cid, $clid, $duration, $disposition, $blacklisted, $blacklistDescription, $whitelisted,
+                $whitelistDescription
+            );
             while ($stmt->fetch()) {
                 $calls[] = array(
                     'timestamp' => $timestamp,
                     'cid' => $cid,
                     'clid' => $clid,
                     'duration' => $duration,
-                    'disposition' => $disposition
+                    'disposition' => $disposition,
+                    'blacklisted' => $blacklisted == 1,
+                    'blacklistDescription' => $blacklistDescription,
+                    'whitelisted' => $whitelisted == 1,
+                    'whitelistDescription' => $whitelistDescription
                 );
             }
             $stmt->close();
@@ -443,6 +469,16 @@ class Callblocker extends Modules {
             $call['formattedTime'] = $this->UCP->View->getDateTime($call['timestamp']);
             $call['description'] = trim(preg_replace('/ <.*>$/', '', $call['clid']), '"');
             unset($call['clid']);
+            if (!is_null($call['whitelistDescription'])) {
+                $altDescription = $call['whitelistDescription'];
+            } elseif (!is_null($call['blacklistDescription'])) {
+                $altDescription = $call['blacklistDescription'];
+            } else {
+                $altDescription = null;
+            }
+            $call['altDescription'] = $altDescription;
+            unset($call['whitelistDescription']);
+            unset($call['blacklistDescription']);
         }
         return $calls;
     }
