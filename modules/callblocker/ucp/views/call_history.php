@@ -34,7 +34,7 @@
             >
                 Disposition
             </th>
-            <th class="text-nowrap" data-formatter="UCP.Modules.Callblocker.formatCallHistoryControls>Controls</th>
+            <th class="text-nowrap" data-formatter="UCP.Modules.Callblocker.formatCallHistoryControls">Controls</th>
         </tr>
         </thead>
     </table>
