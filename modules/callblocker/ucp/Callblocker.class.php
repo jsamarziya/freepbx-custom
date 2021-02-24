@@ -348,22 +348,23 @@ class Callblocker extends Modules {
         $offset = filter_var($_REQUEST['offset'], FILTER_SANITIZE_NUMBER_INT);
         $page = ($offset / $limit) + 1;
         $total = $this->getTotalCalls($ext, $search);
-        $data = $this->postProcessCalls($this->getCalls($ext, $page, $orderby, $order, $search, $limit), $ext);
+        $data = $this->getCalls($ext, $page, $orderby, $order, $search, $limit);
         return array(
             'total' => $total,
             'rows' => $data
         );
     }
 
-    function getTotalCalls($extension, $search) {
+    function getTotalCalls($extension, $search = '') {
         $mysqli = $this->getMysqlConnection();
+        $query = 'SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=?';
         if (!empty($search)) {
-            if ($stmt = $mysqli->prepare('SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=? AND clid LIKE ?')) {
+            if ($stmt = $mysqli->prepare("${query} AND clid LIKE ?")) {
                 $search_exp = "%${search}%";
                 $stmt->bind_param('ss', $extension, $search_exp);
             }
         } else {
-            if ($stmt = $mysqli->prepare('SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=?')) {
+            if ($stmt = $mysqli->prepare($query)) {
                 $stmt->bind_param('s', $extension);
             }
         }
@@ -378,11 +379,70 @@ class Callblocker extends Modules {
         }
     }
 
-    function getCalls($ext, $page, $orderby, $order, $search, $limit) {
-        return null;
-    }
-
-    function postProcessCalls($calls, $ext) {
-        return null;
+    function getCalls($extension, $page = 1, $orderby = 'date', $order = 'desc', $search = '', $limit = 100) {
+        $mysqli = $this->getMysqlConnection();
+        $start = ($limit * ($page - 1));
+        $end = $limit;
+        switch ($orderby) {
+            case 'cid':
+                $order_by = 'cid';
+                break;
+            case 'description':
+                $order_by = 'clid';
+                break;
+            case 'duration':
+                $order_by = 'duration';
+                break;
+            case 'disposition':
+                $order_by = 'disposition';
+                break;
+            case 'date':
+            default:
+                $order_by = 'timestamp';
+                break;
+        }
+        $order = ($order == 'desc') ? 'desc' : 'asc';
+        $query = 'SELECT UNIX_TIMESTAMP(calldate) AS timestamp, src AS cid, clid, duration, userfield AS disposition FROM asteriskcdrdb.cdr WHERE dst=?';
+        $query_suffix = "ORDER BY $order_by ${order} LIMIT ?,?";
+        if (!empty($search)) {
+            if ($stmt = $mysqli->prepare("${query} AND clid LIKE ? ${query_suffix}")) {
+                $search_exp = "%${search}%";
+                $stmt->bind_param('ssii', $extension, $search_exp, $start, $end);
+            }
+        } else {
+            if ($stmt = $mysqli->prepare("${query} LIKE ? ${query_suffix}")) {
+                $stmt->bind_param('sii', $extension, $start, $end);
+            }
+        }
+        $calls = [];
+        if ($stmt) {
+            $stmt->execute();
+            $stmt->bind_result($timestamp, $cid, $clid, $duration, $disposition);
+            while ($stmt->fetch()) {
+                $calls[] = array(
+                    'timestamp' => $timestamp,
+                    'cid' => $cid,
+                    'clid' => $clid,
+                    'duration' => $duration,
+                    'disposition' => $disposition
+                );
+            }
+            $stmt->close();
+        }
+        foreach ($calls as &$call) {
+            if ($call['duration'] > 59) {
+                $min = floor($call['duration'] / 60);
+                if ($min > 59) {
+                    $call['niceDuration'] = sprintf(_('%s hour, %s min, %s sec'), gmdate('H', $call['duration']), gmdate('i', $call['duration']), gmdate('s', $call['duration']));
+                } else {
+                    $call['niceDuration'] = sprintf(_('%s min, %s sec'), gmdate('i', $call['duration']), gmdate('s', $call['duration']));
+                }
+            } else {
+                $call['niceDuration'] = sprintf(_('%s sec'), $call['duration']);
+            }
+            $call['formattedTime'] = $this->UCP->View->getDateTime($call['timestamp']);
+            $call['description'] = preg_replace('/ <.*>$/', '', $call['clid']);
+        }
+        return $calls;
     }
 }
