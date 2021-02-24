@@ -215,6 +215,7 @@ class Callblocker extends Modules {
             case 'addListEntry':
             case 'updateListEntry':
             case 'deleteListEntry':
+            case 'getCallHistory':
                 return true;
             default:
                 return false;
@@ -242,6 +243,9 @@ class Callblocker extends Modules {
                 break;
             case 'deleteListEntry':
                 return $this->deleteListEntry($_REQUEST['list'], $_REQUEST['id']);
+                break;
+            case 'getCallHistory':
+                return $this->getCallHistory();
                 break;
             default:
                 return false;
@@ -333,5 +337,45 @@ class Callblocker extends Modules {
             $stmt->close();
         }
         $mysqli->close();
+    }
+
+    function getCallHistory() {
+        $limit = filter_var($_REQUEST['limit'], FILTER_SANITIZE_NUMBER_INT);
+        $ext = $_REQUEST['extension'];
+        $order = $_REQUEST['order'];
+        $orderby = !empty($_REQUEST['sort']) ? $_REQUEST['sort'] : 'date';
+        $search = !empty($_REQUEST['search']) ? $_REQUEST['search'] : '';
+        $offset = filter_var($_REQUEST['offset'], FILTER_SANITIZE_NUMBER_INT);
+        $page = ($offset / $limit) + 1;
+        $total = $this->getTotalCalls($ext, $search);
+        $data = $this->postProcessCalls($this->getCalls($ext, $page, $orderby, $order, $search, $limit), $ext);
+        return array(
+            'total' => $total,
+            'rows' => $data
+        );
+    }
+
+    function getTotalCalls($extension, $search) {
+        $mysqli = $this->getMysqlConnection();
+        if (!empty($search)) {
+            $stmt = $mysqli->prepare('SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=? AND clid LIKE ?');
+            $stmt->bind_param('ss', $extension, $search);
+        } else {
+            $stmt = $mysqli->prepare('SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=?');
+            $stmt->bind_param('s', $extension);
+        }
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close();
+        return $count;
+    }
+
+    function getCalls($ext, $page, $orderby, $order, $search, $limit) {
+        return null;
+    }
+
+    function postProcessCalls($calls, $ext) {
+        return null;
     }
 }
