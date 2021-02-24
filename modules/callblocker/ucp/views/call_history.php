@@ -3,6 +3,8 @@
            class="table"
            data-url="ajax.php?module=callblocker&amp;command=getCallHistory&amp;extension=<?php echo htmlentities($ext) ?>"
            data-cache="false"
+           data-cookie="true"
+           data-cookie-id-table="ucp-callblocker-call-history-table"
            data-show-toggle="true"
            data-toggle="table"
            data-pagination="true"
