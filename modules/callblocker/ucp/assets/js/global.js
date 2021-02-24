@@ -299,14 +299,14 @@ var CallblockerC = UCPMC.extend({
     formatCallHistoryDisposition: function (value, row, index, field) {
         let cls;
         if (value === "ACCEPTED") {
-            cls = "bg-success";
+            cls = "label-success";
         } else if (value === "BLOCKED") {
-            cls = "bg-warning";
+            cls = "label-warning";
         } else if (value === "BLACKLISTED") {
-            cls = "bg-danger";
+            cls = "label-danger";
         } else {
-            cls = "";
+            cls = "label-default";
         }
-        return `<span class="${cls}">${value}</span>`;
+        return `<span class="label ${cls}">${value}</span>`;
     }
 });
