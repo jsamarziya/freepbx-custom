@@ -359,7 +359,8 @@ class Callblocker extends Modules {
         $mysqli = $this->getMysqlConnection();
         if (!empty($search)) {
             if ($stmt = $mysqli->prepare('SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=? AND clid LIKE ?')) {
-                $stmt->bind_param('ss', $extension, $search);
+                $search_exp = "%${search}%";
+                $stmt->bind_param('ss', $extension, $search_exp);
             }
         } else {
             if ($stmt = $mysqli->prepare('SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=?')) {
