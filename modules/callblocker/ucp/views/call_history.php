@@ -1,8 +1,10 @@
 <div class="col-md-12">
     <table id="call-history-table"
            class="table"
-           data-url="ajax.php?module=cdr&amp;command=grid&amp;extension=<?php echo htmlentities($ext) ?>"
+           data-url="ajax.php?module=callblocker&amp;command=getCallHistory&amp;extension=<?php echo htmlentities($ext) ?>"
            data-cache="false"
+           data-cookie="true"
+           data-cookie-id-table="ucp-callblocker-call-history-table"
            data-show-toggle="true"
            data-toggle="table"
            data-pagination="true"
@@ -25,7 +27,7 @@
                 data-formatter="UCP.Modules.Callblocker.formatCallHistoryDuration">
                 Duration
             </th>
-            <th data-field="userfield" data-sortable="true"
+            <th data-field="disposition" data-sortable="true"
                 data-formatter="UCP.Modules.Callblocker.formatCallHistoryDisposition">
                 Disposition
             </th>

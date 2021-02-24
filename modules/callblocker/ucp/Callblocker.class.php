@@ -30,16 +30,8 @@ class Callblocker extends Modules {
     protected $module = 'Callblocker';
 
     public function __construct($Modules) {
-        //User information. Returned as an array. See:
+        //User information. Returned as an array.
         $this->user = $this->UCP->User->getUser();
-        //Access any FreePBX enabled module or BMO object
-        $core = $this->UCP->FreePBX->Core;
-        //Access any UCP Function.
-        $ucp = $this->UCP;
-        //Access any UCP module
-        $modules = $this->Modules = $Modules;
-        //Asterisk Manager. See: https://wiki.freepbx.org/display/FOP/Asterisk+Manager+Class
-        $this->astman = $this->UCP->FreePBX->astman;
         //Setting retrieved from the UCP Interface in User Manager in Admin
         $this->enabled = $this->UCP->getCombinedSettingByID($this->user['id'], $this->module, 'enabled');
     }
@@ -55,7 +47,6 @@ class Callblocker extends Modules {
         return array();
     }
 
-
     /**
      * Get Widget List
      *
@@ -70,7 +61,6 @@ class Callblocker extends Modules {
             'icon' => 'fa fa-ban', //The Widget Icon from http://fontawesome.io/icons/
             'list' => array() //List of Widgets this module provides
         );
-        //Individual Widgets
         $widget['list']['call_history'] = array(
             'display' => _('Call History'), //Widget Subtitle
             'description' => _('Call history'), //Widget description
@@ -104,7 +94,6 @@ class Callblocker extends Modules {
         return $widget;
     }
 
-
     /**
      * Get Simple Widget Display
      *
@@ -135,7 +124,7 @@ class Callblocker extends Modules {
                     'ext' => $this->getExtension()
                 );
                 $widget = array(
-                    'title' => _('Call History'), //widget name
+                    'title' => _('Call History'),
                     'html' => $this->load_view(__DIR__ . '/views/call_history.php', $displayvars)
                 );
                 break;
@@ -144,7 +133,7 @@ class Callblocker extends Modules {
                     'list' => 'blacklist'
                 );
                 $widget = array(
-                    'title' => _('Blacklist'), //widget name
+                    'title' => _('Blacklist'),
                     'html' => $this->load_view(__DIR__ . '/views/list.php', $displayvars)
                 );
                 break;
@@ -153,7 +142,7 @@ class Callblocker extends Modules {
                     'list' => 'whitelist'
                 );
                 $widget = array(
-                    'title' => _('Whitelist'), //widget name
+                    'title' => _('Whitelist'),
                     'html' => $this->load_view(__DIR__ . '/views/list.php', $displayvars)
                 );
                 break;
@@ -198,7 +187,6 @@ class Callblocker extends Modules {
         return array();
     }
 
-
     /**
      * Poll for information
      *
@@ -211,7 +199,6 @@ class Callblocker extends Modules {
         $items = array();
         return array('status' => true, 'items' => $items);
     }
-
 
     /**
      * Ajax Request
@@ -228,6 +215,7 @@ class Callblocker extends Modules {
             case 'addListEntry':
             case 'updateListEntry':
             case 'deleteListEntry':
+            case 'getCallHistory':
                 return true;
             default:
                 return false;
@@ -256,12 +244,14 @@ class Callblocker extends Modules {
             case 'deleteListEntry':
                 return $this->deleteListEntry($_REQUEST['list'], $_REQUEST['id']);
                 break;
+            case 'getCallHistory':
+                return $this->getCallHistory();
+                break;
             default:
                 return false;
                 break;
         }
     }
-
 
     /**
      * The Handler for unprocessed commands
@@ -347,5 +337,113 @@ class Callblocker extends Modules {
             $stmt->close();
         }
         $mysqli->close();
+    }
+
+    function getCallHistory() {
+        $limit = filter_var($_REQUEST['limit'], FILTER_SANITIZE_NUMBER_INT);
+        $ext = $_REQUEST['extension'];
+        $order = $_REQUEST['order'];
+        $orderby = !empty($_REQUEST['sort']) ? $_REQUEST['sort'] : 'date';
+        $search = !empty($_REQUEST['search']) ? $_REQUEST['search'] : '';
+        $offset = filter_var($_REQUEST['offset'], FILTER_SANITIZE_NUMBER_INT);
+        $page = ($offset / $limit) + 1;
+        $total = $this->getTotalCalls($ext, $search);
+        $data = $this->getCalls($ext, $page, $orderby, $order, $search, $limit);
+        return array(
+            'total' => $total,
+            'rows' => $data
+        );
+    }
+
+    function getTotalCalls($extension, $search = '') {
+        $mysqli = $this->getMysqlConnection();
+        $query = 'SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=?';
+        if (!empty($search)) {
+            if ($stmt = $mysqli->prepare("${query} AND clid LIKE ?")) {
+                $search_exp = "%${search}%";
+                $stmt->bind_param('ss', $extension, $search_exp);
+            }
+        } else {
+            if ($stmt = $mysqli->prepare($query)) {
+                $stmt->bind_param('s', $extension);
+            }
+        }
+        if ($stmt) {
+            $stmt->execute();
+            $stmt->bind_result($count);
+            $stmt->fetch();
+            $stmt->close();
+            return $count;
+        } else {
+            return 0;
+        }
+    }
+
+    function getCalls($extension, $page = 1, $orderby = 'date', $order = 'desc', $search = '', $limit = 100) {
+        $mysqli = $this->getMysqlConnection();
+        $start = ($limit * ($page - 1));
+        $end = $limit;
+        switch ($orderby) {
+            case 'cid':
+                $order_by = 'cid';
+                break;
+            case 'description':
+                $order_by = 'clid';
+                break;
+            case 'duration':
+                $order_by = 'duration';
+                break;
+            case 'disposition':
+                $order_by = 'disposition';
+                break;
+            case 'date':
+            default:
+                $order_by = 'timestamp';
+                break;
+        }
+        $order = ($order == 'desc') ? 'desc' : 'asc';
+        $query = 'SELECT UNIX_TIMESTAMP(calldate) AS timestamp, src AS cid, clid, duration, userfield AS disposition FROM asteriskcdrdb.cdr WHERE dst=?';
+        $query_suffix = "ORDER BY $order_by ${order} LIMIT ?,?";
+        if (!empty($search)) {
+            if ($stmt = $mysqli->prepare("${query} AND clid LIKE ? ${query_suffix}")) {
+                $search_exp = "%${search}%";
+                $stmt->bind_param('ssii', $extension, $search_exp, $start, $end);
+            }
+        } else {
+            if ($stmt = $mysqli->prepare("${query} ${query_suffix}")) {
+                $stmt->bind_param('sii', $extension, $start, $end);
+            }
+        }
+        $calls = [];
+        if ($stmt) {
+            $stmt->execute();
+            $stmt->bind_result($timestamp, $cid, $clid, $duration, $disposition);
+            while ($stmt->fetch()) {
+                $calls[] = array(
+                    'timestamp' => $timestamp,
+                    'cid' => $cid,
+                    'clid' => $clid,
+                    'duration' => $duration,
+                    'disposition' => $disposition
+                );
+            }
+            $stmt->close();
+        }
+        foreach ($calls as &$call) {
+            if ($call['duration'] > 59) {
+                $min = floor($call['duration'] / 60);
+                if ($min > 59) {
+                    $call['niceDuration'] = sprintf(_('%s hour, %s min, %s sec'), gmdate('H', $call['duration']), gmdate('i', $call['duration']), gmdate('s', $call['duration']));
+                } else {
+                    $call['niceDuration'] = sprintf(_('%s min, %s sec'), gmdate('i', $call['duration']), gmdate('s', $call['duration']));
+                }
+            } else {
+                $call['niceDuration'] = sprintf(_('%s sec'), $call['duration']);
+            }
+            $call['formattedTime'] = $this->UCP->View->getDateTime($call['timestamp']);
+            $call['description'] = trim(preg_replace('/ <.*>$/', '', $call['clid']), '"');
+            unset($call['clid']);
+        }
+        return $calls;
     }
 }

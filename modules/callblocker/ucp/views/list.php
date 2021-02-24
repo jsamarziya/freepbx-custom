@@ -10,6 +10,8 @@
            data-toolbar="#<?php echo $list ?>-toolbar"
            data-url="ajax.php?module=callblocker&amp;command=getList&amp;list=<?php echo $list ?>"
            data-cache="false"
+           data-cookie="true"
+           data-cookie-id-table="ucp-callblocker-<?php echo $list ?>-table"
            data-show-toggle="true"
            data-toggle="table"
            data-pagination="true"
