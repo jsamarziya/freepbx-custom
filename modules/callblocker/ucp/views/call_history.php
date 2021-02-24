@@ -15,13 +15,13 @@
     >
         <thead>
         <tr>
-            <th data-field="timestamp" data-sortable="true" data-width="10%"
+            <th data-field="timestamp" data-sortable="true"
                 data-formatter="UCP.Modules.Callblocker.formatCallHistoryTimestamp">
                 Date
             </th>
             <th data-field="cid" data-sortable="true" data-width="10%">CID</th>
             <th data-field="description" data-sortable="true">Description</th>
-            <th data-field="duration" data-sortable="true" data-width="10%">Duration</th>
+            <th data-field="duration" data-sortable="true" data-width="10%"  data-formatter="UCP.Modules.Callblocker.formatCallHistoryDuration">Duration</th>
             <th data-field="userfield" data-sortable="true" data-width="10%">Disposition</th>
             <th class="text-nowrap" data-width="10%">Controls</th>
         </tr>
