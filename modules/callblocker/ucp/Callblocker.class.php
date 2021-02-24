@@ -410,7 +410,7 @@ class Callblocker extends Modules {
                 $stmt->bind_param('ssii', $extension, $search_exp, $start, $end);
             }
         } else {
-            if ($stmt = $mysqli->prepare("${query} LIKE ? ${query_suffix}")) {
+            if ($stmt = $mysqli->prepare("${query} ${query_suffix}")) {
                 $stmt->bind_param('sii', $extension, $start, $end);
             }
         }
