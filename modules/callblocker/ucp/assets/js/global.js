@@ -320,14 +320,14 @@ var CallblockerC = UCPMC.extend({
     formatCallHistoryControls: function (value, row, index, field) {
         let wl, bl;
         if (row.whitelisted) {
-            wl = '<span class="text-muted" title="Add to whitelist"><i class="fa fa-check"></i></span>';
+            wl = '<span class="text-muted" style="cursor: not-allowed;" title="Add to whitelist"><i class="fa fa-check"></i></span>';
         } else {
-            wl = `<a role="button" class="text-success" title="Add to whitelist" onclick="UCP.Modules.Callblocker.addToList(\'whitelist\',${index})"><i class="fa fa-check"></i></a>`;
+            wl = `<a class="text-success" title="Add to whitelist" onclick="UCP.Modules.Callblocker.addToList(\'whitelist\',${index})"><i class="fa fa-check"></i></a>`;
         }
         if (row.blacklisted) {
-            bl = '<span class="text-muted" title="Add to blacklist"><i class="fa fa-ban"></i></span>';
+            bl = '<span class="text-muted" style="cursor: not-allowed;" title="Add to blacklist"><i class="fa fa-ban"></i></span>';
         } else {
-            bl = `<a role="button" class="text-danger" title="Add to blacklist" onclick="UCP.Modules.Callblocker.addToList(\'blacklist\',${index})"><i class="fa fa-ban"></i></a>`;
+            bl = `<a class="text-danger" title="Add to blacklist" onclick="UCP.Modules.Callblocker.addToList(\'blacklist\',${index})"><i class="fa fa-ban"></i></a>`;
         }
         return `${wl} ${bl}`;
     },
