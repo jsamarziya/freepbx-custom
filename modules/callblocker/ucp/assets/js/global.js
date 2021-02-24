@@ -195,6 +195,10 @@ var CallblockerC = UCPMC.extend({
         }
         return null;
     },
+    getCallHistoryEntry: function (index) {
+        const data = $('call-history-table').bootstrapTable('getData');
+        return data[index];
+    },
     deleteListEntry: function (list, id) {
         $.ajax({
             url: "ajax.php",
