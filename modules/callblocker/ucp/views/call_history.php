@@ -1,7 +1,7 @@
 <div class="col-md-12">
     <table id="call-history-table"
            class="table"
-           data-url="ajax.php?module=cdr&amp;command=grid&amp;extension=<?php echo htmlentities($ext) ?>"
+           data-url="ajax.php?module=callblocker&amp;command=getCallHistory&amp;extension=<?php echo htmlentities($ext) ?>"
            data-cache="false"
            data-show-toggle="true"
            data-toggle="table"
