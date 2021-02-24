@@ -418,7 +418,7 @@ FROM
         LEFT JOIN
     callblocker.whitelist whitelist ON cdr.src = whitelist.cid_number COLLATE utf8mb4_general_ci
 WHERE
-    dst = ?;
+    dst = ?
 EOT;
         $query_suffix = "ORDER BY $order_by ${order} LIMIT ?,?";
         if (!empty($search)) {
