@@ -213,7 +213,7 @@ var CallblockerC = UCPMC.extend({
             }
         });
     },
-    showAddListEntryDialog: function (list, table, cid, description) {
+    showAddListEntryDialog: function (list, table, title = 'Add Entry', cid, description) {
         const content = `
                <div class="form-group">
                    <label for="add-list-entry-cid">CID</label>
@@ -228,7 +228,7 @@ var CallblockerC = UCPMC.extend({
                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                <button type="button" class="btn btn-primary" onclick="UCP.Modules.Callblocker.addListEntry('${list}','${table}')">Add Entry</button>
            `;
-        UCP.showDialog("Add Entry", content, footer, function () {
+        UCP.showDialog(title, content, footer, function () {
             const cid_input = $('#add-list-entry-cid');
             cid_input.val(cid);
             $('#add-list-entry-description').val(description);
@@ -332,12 +332,12 @@ var CallblockerC = UCPMC.extend({
             return "";
         }
         return `
-            <a title="Add to whitelist" onclick="UCP.Modules.Callblocker.addCallToList('whitelist',${index})"><i class="fa fa-check"></i></a>
-            <a title="Add to blacklist" onclick="UCP.Modules.Callblocker.addCallToList('blacklist',${index})"><i class="fa fa-ban"></i></a>
+            <a title="Add to whitelist" onclick="UCP.Modules.Callblocker.addCallToList('whitelist','Whitelist',${index})"><i class="fa fa-check"></i></a>
+            <a title="Add to blacklist" onclick="UCP.Modules.Callblocker.addCallToList('blacklist','Blacklist',${index})"><i class="fa fa-ban"></i></a>
         `;
     },
-    addCallToList: function (list, index) {
+    addCallToList: function (list, description, index) {
         const entry = UCP.Modules.Callblocker.getCallHistoryEntry(index);
-        UCP.Modules.Callblocker.showAddListEntryDialog(list, 'call-history-table', entry.cid, entry.description);
+        UCP.Modules.Callblocker.showAddListEntryDialog(list, 'call-history-table', `Add ${description} Entry`, entry.cid, entry.description);
     }
 });
