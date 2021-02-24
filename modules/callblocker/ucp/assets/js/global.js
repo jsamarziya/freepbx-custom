@@ -292,7 +292,7 @@ var CallblockerC = UCPMC.extend({
     },
     formatCallHistoryTimestamp: function (value, row, index, field) {
         return UCP.dateTimeFormatter(value);
-    }
+    },
     formatCallHistoryDuration: function (value, row, index, field) {
         return row.niceDuration;
     }
