@@ -358,17 +358,23 @@ class Callblocker extends Modules {
     function getTotalCalls($extension, $search) {
         $mysqli = $this->getMysqlConnection();
         if (!empty($search)) {
-            $stmt = $mysqli->prepare('SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=? AND clid LIKE ?');
-            $stmt->bind_param('ss', $extension, $search);
+            if ($stmt = $mysqli->prepare('SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=? AND clid LIKE ?')) {
+                $stmt->bind_param('ss', $extension, $search);
+            }
         } else {
-            $stmt = $mysqli->prepare('SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=?');
-            $stmt->bind_param('s', $extension);
+            if ($stmt = $mysqli->prepare('SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=?')) {
+                $stmt->bind_param('s', $extension);
+            }
         }
-        $stmt->execute();
-        $stmt->bind_result($count);
-        $stmt->fetch();
-        $stmt->close();
-        return $count;
+        if ($stmt) {
+            $stmt->execute();
+            $stmt->bind_result($count);
+            $stmt->fetch();
+            $stmt->close();
+            return $count;
+        } else {
+            return 0;
+        }
     }
 
     function getCalls($ext, $page, $orderby, $order, $search, $limit) {
