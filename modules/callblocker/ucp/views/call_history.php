@@ -23,7 +23,11 @@
                 Date
             </th>
             <th data-field="cid" data-sortable="true">CID</th>
-            <th data-field="description" data-sortable="true">Description</th>
+            <th data-field="description" data-sortable="true"
+                data-formatter="UCP.Modules.Callblocker.formatCallHistoryDescription"
+            >
+                Description
+            </th>
             <th data-field="duration" data-sortable="true"
                 data-formatter="UCP.Modules.Callblocker.formatCallHistoryDuration"
             >
