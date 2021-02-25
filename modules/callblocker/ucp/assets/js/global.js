@@ -77,7 +77,7 @@ var CallblockerC = UCPMC.extend({
      * @param  {string}            dashboard_id The dashboard id
      */
     showDashboard: function (dashboard_id) {
-        alert(`show dashboard ${dashboards[dashboard_id]["widget_type_id"]}`);
+        alert(`show dashboard ${dashboard_id}`);
     }
     ,
     /**
