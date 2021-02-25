@@ -542,11 +542,11 @@ EOT;
             $stmt->close();
         }
         $mysqli->close();
+        error_log("*** generating report");
         return $calls;
         $report = [];
         foreach ($calls as &$call) {
             $year = $call['year'];
-            $call['description'] = $this->getDescription($call['clid']);
             if (!in_array($year, $report)) {
                 $report[$year] = [];
             }
@@ -557,12 +557,13 @@ EOT;
                     break;
                 }
             }
+            $description = $this->getDescription($call['clid']);
             if (isset($year_record)) {
-                $year_record['description'][] = $call['description'];
+                $year_record['description'][] = $description;
             } else {
                 unset($call['year']);
                 unset($call['clid']);
-                $call['description'] = [$call['description']];
+                $call['description'] = [$description];
                 $year_records[] = $call;
             }
         }
