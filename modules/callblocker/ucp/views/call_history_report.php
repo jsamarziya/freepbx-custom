@@ -1,9 +1,8 @@
 <div class="col-md-12">
-    <h2>Call History Report</h2>
+    <select data-toggle="select" data-size="auto">
+        <option>All</option>
+        <option>2021</option>
+        <option>2020</option>
+    </select>
 </div>
 
-<script>
-    $(document).on("logIn", function(event) {
-        alert("login");
-    });
-</script>
