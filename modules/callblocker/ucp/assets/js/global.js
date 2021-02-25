@@ -77,8 +77,12 @@ var CallblockerC = UCPMC.extend({
      * @param  {string}            dashboard_id The dashboard id
      */
     showDashboard: function (dashboard_id) {
-        alert("showDashboard");
-    },
+        const dateRangeSelect = $("#call-history-report-date-range");
+        if (dateRangeSelect){
+            alert("load call history report now");
+        }
+    }
+    ,
     /**
      * Window State
      * The method is executed when the tab in the browser (Or the browser itself) is brought into focus or out of focus
