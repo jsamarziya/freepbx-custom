@@ -360,10 +360,10 @@ var CallblockerC = UCPMC.extend({
     setCallHistoryReport: function (data) {
         const select = $('#call-history-report-date');
         select.empty();
-        select.append('<option>All</option>');
+        select.append('<option value="all">All</option>');
         select.append('<option data-divider="true"></option>');
         for (const year of Object.keys(data).sort().reverse()) {
-            select.append(`<option>${year}</option>`);
+            select.append(`<option value="${year}">${year}</option>`);
         }
         select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
             UCP.Modules.Callblocker.callHistoryDateSelected(e, clickedIndex, isSelected, previousValue);
@@ -372,6 +372,8 @@ var CallblockerC = UCPMC.extend({
     },
     callHistoryDateSelected(e, clickedIndex, isSelected, previousValue) {
         console.log(e);
+        const value = $('#call-history-report-date').value;
+        alert(`You selected ${value}`);
         const callsBlocked = 9;
         const callsBlacklisted = 1;
         const callsAccepted = 3;
