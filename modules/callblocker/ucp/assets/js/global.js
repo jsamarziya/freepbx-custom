@@ -79,7 +79,7 @@ var CallblockerC = UCPMC.extend({
     showDashboard: function (dashboard_id) {
         for (const widget of dashboards[dashboard_id]) {
             if (widget.widget_type_id === "call_history_report") {
-                alert("load call history report");
+                UCP.Modules.Callblocker.loadCallHistoryReport();
             }
         }
     },
@@ -344,5 +344,8 @@ var CallblockerC = UCPMC.extend({
     addCallToList: function (list, description, index) {
         const entry = UCP.Modules.Callblocker.getCallHistoryEntry(index);
         UCP.Modules.Callblocker.showAddListEntryDialog(list, 'call-history-table', `Add ${description} Entry`, entry.cid, entry.description);
+    },
+    loadCallHistoryReport: function(){
+        alert("load da report");
     }
 });
