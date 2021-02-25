@@ -371,7 +371,7 @@ var CallblockerC = UCPMC.extend({
         select.selectpicker('refresh');
     },
     callHistoryDateSelected(e, clickedIndex, isSelected, previousValue) {
-        alert(`${e} ${clickedIndex} ${isSelected} ${previousValue}`);
+        console.log(e);
         const callsBlocked = 9;
         const callsBlacklisted = 1;
         const callsAccepted = 3;
