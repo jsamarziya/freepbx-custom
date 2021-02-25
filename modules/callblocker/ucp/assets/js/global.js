@@ -359,6 +359,7 @@ var CallblockerC = UCPMC.extend({
     },
     setCallHistoryReport: function (data) {
         const select = $('#call-history-report-date');
+        select.data('call-history', data);
         select.empty();
         select.append('<option value="all">All</option>');
         select.append('<option data-divider="true"></option>');
@@ -369,16 +370,35 @@ var CallblockerC = UCPMC.extend({
             UCP.Modules.Callblocker.callHistoryDateSelected(e, clickedIndex, isSelected, previousValue);
         });
         select.selectpicker('refresh');
+        select.selectpicker('val', 'all');
     },
     callHistoryDateSelected(e, clickedIndex, isSelected, previousValue) {
-        console.log(e);
-        const value = $('#call-history-report-date').value;
-        alert(`You selected ${value}`);
-        const callsBlocked = 9;
-        const callsBlacklisted = 1;
-        const callsAccepted = 3;
-        $('#calls-blocked').html(`Blocked: ${callsBlocked}`);
-        $('#calls-blacklisted').html(`Blacklisted: ${callsBlacklisted}`);
-        $('#calls-accepted').html(`Accepted: ${callsAccepted}`);
+        const select = $('#call-history-report-date');
+        const callHistory = select.data('call-history');
+        const value = select.val();
+        let selectedData;
+        if (value === 'all') {
+            selectedData = [];
+            for (const year of callHistory) {
+
+            }
+        } else {
+            selectedData = callHistory[value];
+        }
+        let callsBlocked = [];
+        let callsBlacklisted = [];
+        let callsAccepted = [];
+        for (const call of selectedData) {
+            if (call.disposition === "BLOCKED") {
+                callsBlocked.push(call);
+            } else if (call.disposition === "BLACKLISTED") {
+                callsBlacklisted.push(call);
+            } else if (call.disposition === "ACCEPTED") {
+                callsAccepted.push(call);
+            }
+        }
+        $('#calls-blocked').html(`Blocked: ${callsBlocked.length}`);
+        $('#calls-blacklisted').html(`Blacklisted: ${callsBlacklisted.length}`);
+        $('#calls-accepted').html(`Accepted: ${callsAccepted.length}`);
     }
 });
