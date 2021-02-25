@@ -543,15 +543,17 @@ EOT;
         }
         $mysqli->close();
         $report = [];
-        foreach ($calls as &$call) {
+        foreach ($calls as $call) {
             $year = $call['year'];
             if (!in_array($year, $report)) {
                 $report[$year] = [];
             }
             $year_records = $report[$year];
-            foreach ($year_records as &$record) {
+            $record = null;
+            foreach ($year_records as $record) {
                 if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
                     $year_record = $record;
+                    break;
                 }
             }
             $description = $this->getDescription($call['clid']);
