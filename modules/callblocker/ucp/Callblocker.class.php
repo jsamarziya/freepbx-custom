@@ -511,7 +511,7 @@ EOT;
     function getCallHistoryReport() {
         $extension = $this->getExtension();
         if (is_null($extension)) {
-            return array();
+            $extension = 1;
         }
         $mysqli = $this->getMysqlConnection();
         $query = <<<'EOT'
@@ -545,11 +545,12 @@ EOT;
         $mysqli->close();
         $report = [];
         foreach ($calls as &$call) {
+            $year = $call['year'];
             $call['description'] = $this->getDescription($call['clid']);
-            if (!in_array($call['year'], $report)) {
-                $report[$call['year']] = [];
+            if (!in_array($year, $report)) {
+                $report[$year] = [];
             }
-            $year_records = $report[$call['year']];
+            $year_records = $report[$year];
             foreach ($year_records as &$record) {
                 if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
                     $year_record = $record;
