@@ -548,7 +548,7 @@ EOT;
             if (!array_key_exists($year, $report)) {
                 $report[$year] = [];
             }
-            $year_records = $report[$year];
+            $year_records = &$report[$year];
             $year_record = null;
             foreach ($year_records as &$record) {
                 if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
