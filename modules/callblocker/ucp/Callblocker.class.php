@@ -527,6 +527,9 @@ EOT;
         if ($stmt = $mysqli->prepare($query)) {
             $stmt->bind_param('s', $extension);
         }
+        if (!$stmt) {
+            throw new \Exception("no statement");
+        }
         $calls = [];
         if ($stmt) {
             $stmt->execute();
