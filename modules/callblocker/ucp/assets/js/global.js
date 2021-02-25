@@ -358,11 +358,11 @@ var CallblockerC = UCPMC.extend({
         });
     },
     setCallHistoryReport: function (data) {
-        alert("Set call history report!");
         const select = $('#call-history-report-date');
         select.empty();
         select.append('<option>All</option>');
         select.append('<option data-divider="true"></option>');
-        select.append('<option>2021</option>')
+        select.append('<option>2021</option>');
+        select.selectpicker('refresh');
     }
 });
