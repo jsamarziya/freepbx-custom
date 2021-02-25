@@ -71,6 +71,16 @@ class Callblocker extends Modules {
             'minsize' => array('height' => 2, 'width' => 2), //The minimum size a widget can be when resized on the dashboard
             'noresize' => false //If set to true the widget will not be allowed to be resized
         );
+        $widget['list']['call_history_report'] = array(
+            'display' => _('Call History Report'), //Widget Subtitle
+            'description' => _('Call history report'), //Widget description
+            'hasSettings' => false, //Set to true if this widget has settings. This will make the cog (gear) icon display on the widget display
+            'icon' => 'fa fa-file-text-o', //If set the widget in on the side bar will use this icon instead of the category icon,
+            'dynamic' => false, //If set to true then this widget can be added multiple times, if false then this widget can only be added once per dashboard!,
+            'defaultsize' => array('height' => 9, 'width' => 8), //The default size of the widget when placed in the dashboard
+            'minsize' => array('height' => 2, 'width' => 2), //The minimum size a widget can be when resized on the dashboard
+            'noresize' => false //If set to true the widget will not be allowed to be resized
+        );
         $widget['list']['blacklist'] = array(
             'display' => _('Blacklist'), //Widget Subtitle
             'description' => _('List of banned callers'), //Widget description
@@ -126,6 +136,15 @@ class Callblocker extends Modules {
                 $widget = array(
                     'title' => _('Call History'),
                     'html' => $this->load_view(__DIR__ . '/views/call_history.php', $displayvars)
+                );
+                break;
+            case 'call_history_report':
+                $displayvars = array(
+                    'ext' => $this->getExtension()
+                );
+                $widget = array(
+                    'title' => _('Call History Report'),
+                    'html' => $this->load_view(__DIR__ . '/views/call_history_report.php', $displayvars)
                 );
                 break;
             case 'blacklist':
@@ -216,6 +235,7 @@ class Callblocker extends Modules {
             case 'updateListEntry':
             case 'deleteListEntry':
             case 'getCallHistory':
+            case 'getCallHistoryReport':
                 return true;
             default:
                 return false;
@@ -246,6 +266,9 @@ class Callblocker extends Modules {
                 break;
             case 'getCallHistory':
                 return $this->getCallHistory();
+                break;
+            case 'getCallHistoryReport':
+                return $this->getCallHistoryReport();
                 break;
             default:
                 return false;
@@ -481,5 +504,9 @@ EOT;
             unset($call['blacklistDescription']);
         }
         return $calls;
+    }
+
+    function getCallHistoryReport() {
+        return array();
     }
 }
