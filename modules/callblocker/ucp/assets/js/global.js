@@ -371,7 +371,6 @@ var CallblockerC = UCPMC.extend({
         });
         select.selectpicker('refresh');
         select.selectpicker('val', 'all');
-        UCP.Modules.Callblocker.callHistoryDateSelected();
     },
     callHistoryDateSelected() {
         const select = $('#call-history-report-date');
