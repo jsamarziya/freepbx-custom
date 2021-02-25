@@ -518,8 +518,7 @@ FROM
     asteriskcdrdb.cdr
 WHERE
     dst = ?
-GROUP BY year, cid, clid, disposition
-ORDER BY src;
+GROUP BY year, src, clid, userfield
 EOT;
         if ($stmt = $mysqli->prepare($query)) {
             $stmt->bind_param('s', $extension);
