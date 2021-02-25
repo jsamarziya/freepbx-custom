@@ -545,28 +545,24 @@ EOT;
         $report = [];
         foreach ($calls as $call) {
             $year = $call['year'];
+            $description = $this->getDescription($call['clid']);
             if (!array_key_exists($year, $report)) {
                 $report[$year] = [];
             }
             $year_records = &$report[$year];
-            $year_record = null;
+            $found_record = false;
             foreach ($year_records as &$record) {
                 if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
-                    $year_record = &$record;
+                    $record['description'][] = $description;
+                    $found_record = true;
                     break;
                 }
             }
-            $description = $this->getDescription($call['clid']);
-            if (is_null($year_record)) {
+            if (!$found_record) {
                 unset($call['year']);
                 unset($call['clid']);
                 $call['description'] = [$description];
                 $year_records[] = $call;
-            } else {
-                dbug($year_record);
-                $descriptions = &$year_record['description'];
-                $descriptions[] = $description;
-                dbug($year_record);
             }
         }
         return $report;
