@@ -552,15 +552,12 @@ EOT;
             foreach ($year_records as &$record) {
                 if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
                     $year_record = $record;
-                    break;
                 }
             }
             $description = $this->getDescription($call['clid']);
             if (isset($year_record)) {
-                dbug("adding description to existing record");
                 $year_record['description'][] = $description;
             } else {
-                dbug("adding new record");
                 unset($call['year']);
                 unset($call['clid']);
                 $call['description'] = [$description];
