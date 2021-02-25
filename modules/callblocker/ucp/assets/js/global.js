@@ -362,9 +362,7 @@ var CallblockerC = UCPMC.extend({
         select.empty();
         select.append('<option>All</option>');
         select.append('<option data-divider="true"></option>');
-        const years = Object.keys(data);
-        years.sort();
-        for (const year of years) {
+        for (const year of Object.keys(data).sort().reverse()) {
             select.append(`<option>${year}</option>`);
         }
         select.selectpicker('refresh');
