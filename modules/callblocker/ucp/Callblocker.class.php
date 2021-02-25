@@ -510,6 +510,7 @@ EOT;
 
     function getCallHistoryReport() {
         $extension = $this->getExtension();
+        # TODO fix this
         $extension = 1;
         $mysqli = $this->getMysqlConnection();
         $query = <<<'EOT'
@@ -541,7 +542,6 @@ EOT;
             $stmt->close();
         }
         $mysqli->close();
-        return "what??? ${extension}";
         $report = [];
         foreach ($calls as &$call) {
             $year = $call['year'];
