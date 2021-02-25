@@ -527,9 +527,6 @@ EOT;
         if ($stmt = $mysqli->prepare($query)) {
             $stmt->bind_param('s', $extension);
         }
-        if (!$stmt) {
-            throw new \Exception("no statement");
-        }
         $calls = [];
         if ($stmt) {
             $stmt->execute();
@@ -546,6 +543,7 @@ EOT;
             $stmt->close();
         }
         $mysqli->close();
+        return $calls;
         $report = [];
         foreach ($calls as &$call) {
             $year = $call['year'];
