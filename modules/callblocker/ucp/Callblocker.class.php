@@ -542,6 +542,7 @@ EOT;
             $stmt->close();
         }
         $mysqli->close();
+        return $calls;
         $report = [];
         foreach ($calls as &$call) {
             $year = $call['year'];
