@@ -379,7 +379,7 @@ var CallblockerC = UCPMC.extend({
         let selectedData;
         if (value === 'all') {
             selectedData = [];
-            for (const year of callHistory) {
+            for (const year of Object.values(callHistory)) {
 
             }
         } else {
