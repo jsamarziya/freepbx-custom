@@ -414,5 +414,6 @@ var CallblockerC = UCPMC.extend({
         $('#calls-blocked').html(`Blocked: ${callsBlocked}`);
         $('#calls-blacklisted').html(`Blacklisted: ${callsBlacklisted}`);
         $('#calls-accepted').html(`Accepted: ${callsAccepted}`);
+        $('#blocked-callers-table').bootstrapTable({data: blockedCallers})
     }
 });
