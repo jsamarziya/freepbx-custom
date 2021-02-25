@@ -346,6 +346,22 @@ var CallblockerC = UCPMC.extend({
         UCP.Modules.Callblocker.showAddListEntryDialog(list, 'call-history-table', `Add ${description} Entry`, entry.cid, entry.description);
     },
     loadCallHistoryReport: function(){
-        alert("load da report");
+        $.ajax({
+            url: "ajax.php",
+            data: {
+                "module": "callblocker",
+                "command": "getCallHistoryReport",
+            },
+            success: function (data) {
+                UCP.Modules.Callblocker.setCallHistoryReport(data);
+            }
+        });
+    },
+    setCallHistoryReport: function (data) {
+        const select = $('#call-history-report-date');
+        select.empty();
+        select.append('<option>All</option>');
+        select.append('<option data-divider="true"></option>');
+        select.append('<option>2021</option>')
     }
 });
