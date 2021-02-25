@@ -564,7 +564,7 @@ EOT;
                 unset($call['year']);
                 unset($call['clid']);
                 $call['description'] = [$description];
-                $year_records[] = $call;
+                $report[$year][] = $call;
             }
         }
         return $report;
