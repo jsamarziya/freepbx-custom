@@ -563,8 +563,10 @@ EOT;
                 $call['description'] = [$description];
                 $year_records[] = $call;
             } else {
+                dbug($year_record);
                 $descriptions = &$year_record['description'];
                 $descriptions[] = $description;
+                dbug($year_record);
             }
         }
         return $report;
