@@ -365,11 +365,11 @@ var CallblockerC = UCPMC.extend({
         select.append('<option>2021</option>');
         select.selectpicker('refresh');
 
-        const callsAccepted = 3;
         const callsBlocked = 9;
         const callsBlacklisted = 1;
-        $('#calls-accepted').html(`Accepted: ${callsAccepted}`);
+        const callsAccepted = 3;
         $('#calls-blocked').html(`Blocked: ${callsBlocked}`);
         $('#calls-blacklisted').html(`Blacklisted: ${callsBlacklisted}`);
+        $('#calls-accepted').html(`Accepted: ${callsAccepted}`);
     }
 });
