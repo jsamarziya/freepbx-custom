@@ -510,6 +510,7 @@ EOT;
 
     function getCallHistoryReport() {
         $extension = $this->getExtension();
+        dbug("Extension is $extension");
         # TODO fix this
         $extension = 1;
         $mysqli = $this->getMysqlConnection();
