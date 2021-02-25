@@ -564,9 +564,9 @@ EOT;
                 $report[$year][] = $call;
             } else {
                 dbug("updating existing record");
-                dbug("record before: ${year_record}");
+                dbug($year_record);
                 $year_record['description'][] = $description;
-                dbug("record after: ${year_record}");
+                dbug($year_record);
             }
         }
         return $report;
