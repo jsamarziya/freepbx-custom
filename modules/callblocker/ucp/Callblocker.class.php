@@ -549,23 +549,23 @@ EOT;
                 $report[$year] = [];
             }
             $year_records = $report[$year];
-            $record = null;
-            foreach ($year_records as $record) {
+            $year_record = null;
+            foreach ($year_records as &$record) {
                 if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
                     $year_record = $record;
                     break;
                 }
             }
             $description = $this->getDescription($call['clid']);
-            if (isset($year_record)) {
-                dbug("updating existing record");
-                $year_record['description'][] = $description;
-            } else {
+            if (is_null($year_record)) {
                 dbug("adding new record");
                 unset($call['year']);
                 unset($call['clid']);
                 $call['description'] = [$description];
                 $report[$year][] = $call;
+            } else {
+                dbug("updating existing record");
+                $year_record['description'][] = $description;
             }
             dbug($report);
         }
