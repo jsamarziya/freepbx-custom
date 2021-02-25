@@ -77,10 +77,7 @@ var CallblockerC = UCPMC.extend({
      * @param  {string}            dashboard_id The dashboard id
      */
     showDashboard: function (dashboard_id) {
-        const dateRangeSelect = $("#call-history-report-date-range");
-        if (dateRangeSelect != null){
-            alert("load call history report now");
-        }
+        alert(`show dashboard ${dashboard_id}`);
     }
     ,
     /**
