@@ -558,16 +558,16 @@ EOT;
             }
             $description = $this->getDescription($call['clid']);
             if (is_null($year_record)) {
-                dbug("adding new record");
                 unset($call['year']);
                 unset($call['clid']);
                 $call['description'] = [$description];
                 $report[$year][] = $call;
             } else {
                 dbug("updating existing record");
+                dbug("record before: ${year_record}");
                 $year_record['description'][] = $description;
+                dbug("record after: ${year_record}");
             }
-            dbug($report);
         }
         return $report;
     }
