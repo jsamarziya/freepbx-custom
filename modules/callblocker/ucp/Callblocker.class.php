@@ -552,8 +552,8 @@ EOT;
             $year_record = null;
             foreach ($year_records as &$record) {
                 if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
-                    $year_record = &$record;
-                    array_push($record['description'], "hello");
+                    $year_record =$record;
+                    $record['description'] = ["hello", "world"];
                     break;
                 }
             }
