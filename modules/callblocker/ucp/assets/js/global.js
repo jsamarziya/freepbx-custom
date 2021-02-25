@@ -345,7 +345,7 @@ var CallblockerC = UCPMC.extend({
         const entry = UCP.Modules.Callblocker.getCallHistoryEntry(index);
         UCP.Modules.Callblocker.showAddListEntryDialog(list, 'call-history-table', `Add ${description} Entry`, entry.cid, entry.description);
     },
-    loadCallHistoryReport: function(){
+    loadCallHistoryReport: function () {
         $.ajax({
             url: "ajax.php",
             data: {
@@ -358,6 +358,7 @@ var CallblockerC = UCPMC.extend({
         });
     },
     setCallHistoryReport: function (data) {
+        alert("Set call history report!");
         const select = $('#call-history-report-date');
         select.empty();
         select.append('<option>All</option>');
