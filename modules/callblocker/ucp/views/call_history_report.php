@@ -4,6 +4,6 @@
     <h3>
         <span id="calls-accepted" class="label label-success"></span>
         <span id="calls-blocked" class="label label-warning"></span>
-        <span id="calls-blacklisted" class="label ${cls}"></span>
+        <span id="calls-blacklisted" class="label label-danger"></span>
     </h3>
 </div>

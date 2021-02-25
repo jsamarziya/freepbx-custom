@@ -507,6 +507,10 @@ EOT;
     }
 
     function getCallHistoryReport() {
-        return array();
+        $extension = $this->getExtension()
+        if (is_null($extension)) {
+            return array();
+        }
+
     }
 }
