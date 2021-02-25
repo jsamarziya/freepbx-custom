@@ -77,6 +77,7 @@ var CallblockerC = UCPMC.extend({
      * @param  {string}            dashboard_id The dashboard id
      */
     showDashboard: function (dashboard_id) {
+        alert("showDashboard");
     },
     /**
      * Window State

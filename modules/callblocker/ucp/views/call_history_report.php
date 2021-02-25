@@ -6,9 +6,3 @@
         <option>2020</option>
     </select>
 </div>
-
-<select>
-    $(document).on("post-body.widgets", function(event, dashboard_id) {
-    alert("load");
-    });
-</select>
