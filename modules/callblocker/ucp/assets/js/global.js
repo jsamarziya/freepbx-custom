@@ -385,20 +385,26 @@ var CallblockerC = UCPMC.extend({
         } else {
             selectedData = callHistory[value];
         }
-        let callsBlocked = [];
-        let callsBlacklisted = [];
-        let callsAccepted = [];
+        let callsBlocked = 0;
+        let blockedCallers = [];
+        let callsBlacklisted = 0;
+        let blacklistedCallers = [];
+        let callsAccepted = 0;
+        let acceptedCallers = [];
         for (const call of selectedData) {
             if (call.disposition === "BLOCKED") {
-                callsBlocked.push(call);
+                callsBlocked += call.count;
+                blockedCallers.push(call);
             } else if (call.disposition === "BLACKLISTED") {
-                callsBlacklisted.push(call);
+                callsBlacklisted += call.count;
+                blacklistedCallers.push(call);
             } else if (call.disposition === "ACCEPTED") {
-                callsAccepted.push(call);
+                callsAccepted += call.count;
+                acceptedCallers.push(call);
             }
         }
-        $('#calls-blocked').html(`Blocked: ${callsBlocked.length}`);
-        $('#calls-blacklisted').html(`Blacklisted: ${callsBlacklisted.length}`);
-        $('#calls-accepted').html(`Accepted: ${callsAccepted.length}`);
+        $('#calls-blocked').html(`Blocked: ${callsBlocked}`);
+        $('#calls-blacklisted').html(`Blacklisted: ${callsBlacklisted}`);
+        $('#calls-accepted').html(`Accepted: ${callsAccepted}`);
     }
 });
