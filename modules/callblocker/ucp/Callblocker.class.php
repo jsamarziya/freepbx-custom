@@ -396,10 +396,11 @@ class Callblocker extends Modules {
             $stmt->bind_result($count);
             $stmt->fetch();
             $stmt->close();
-            return $count;
         } else {
-            return 0;
+            $count = 0;
         }
+        $mysqli->close();
+        return $count;
     }
 
     function getCalls($extension, $page = 1, $orderby = 'date', $order = 'desc', $search = '', $limit = 100) {
@@ -478,6 +479,7 @@ EOT;
             }
             $stmt->close();
         }
+        $mysqli->close();
         foreach ($calls as &$call) {
             if ($call['duration'] > 59) {
                 $min = floor($call['duration'] / 60);
@@ -490,7 +492,7 @@ EOT;
                 $call['niceDuration'] = sprintf(_('%s sec'), $call['duration']);
             }
             $call['formattedTime'] = $this->UCP->View->getDateTime($call['timestamp']);
-            $call['description'] = trim(preg_replace('/ <.*>$/', '', $call['clid']), '"');
+            $call['description'] = $this->getDescription($call['clid']);
             unset($call['clid']);
             if (!is_null($call['whitelistDescription'])) {
                 $altDescription = $call['whitelistDescription'];
@@ -511,5 +513,62 @@ EOT;
         if (is_null($extension)) {
             return array();
         }
+        $mysqli = $this->getMysqlConnection();
+        $query = <<<'EOT'
+SELECT 
+    COUNT(*) AS count, YEAR(calldate) AS year, src AS cid, clid, userfield AS disposition
+FROM
+    asteriskcdrdb.cdr
+WHERE
+    dst = ?
+GROUP BY year, cid, clid, disposition
+ORDER BY src;
+EOT;
+        if ($stmt = $mysqli->prepare($query)) {
+            $stmt->bind_param('s', $extension);
+        }
+        $calls = [];
+        if ($stmt) {
+            $stmt->execute();
+            $stmt->bind_result($count, $year, $cid, $clid, $disposition);
+            while ($stmt->fetch()) {
+                $calls[] = array(
+                    'count' => $count,
+                    'year' => $year,
+                    'cid' => $cid,
+                    'clid' => $clid,
+                    'disposition' => $disposition,
+                );
+            }
+            $stmt->close();
+        }
+        $mysqli->close();
+        $report = [];
+        foreach ($calls as &$call) {
+            $call['description'] = $this->getDescription($call['clid']);
+            if (!in_array($call['year'], $report)) {
+                $report[$call['year']] = [];
+            }
+            $year_records = $report[$call['year']];
+            foreach ($year_records as &$record) {
+                if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
+                    $year_record = $record;
+                    break;
+                }
+            }
+            if (isset($year_record)) {
+                $year_record['description'][] = $call['description'];
+            } else {
+                unset($call['year']);
+                unset($call['clid']);
+                $call['description'] = [$call['description']];
+                $year_records[] = $call;
+            }
+        }
+        return $report;
+    }
+
+    function getDescription($clid) {
+        return trim(preg_replace('/ <.*>$/', '', $clid), '"');
     }
 }
