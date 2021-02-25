@@ -77,9 +77,12 @@ var CallblockerC = UCPMC.extend({
      * @param  {string}            dashboard_id The dashboard id
      */
     showDashboard: function (dashboard_id) {
-        alert(`show dashboard ${dashboard_id}`);
-    }
-    ,
+        for (const widget of dashboards[dashboard_id]) {
+            if (widget.widget_type_id === "call_history_report") {
+                alert("load call history report");
+            }
+        }
+    },
     /**
      * Window State
      * The method is executed when the tab in the browser (Or the browser itself) is brought into focus or out of focus
