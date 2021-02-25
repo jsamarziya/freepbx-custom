@@ -546,6 +546,7 @@ EOT;
         foreach ($calls as $call) {
             $year = $call['year'];
             if (!in_array($year, $report)) {
+                dbug("creating report for ${year}");
                 $report[$year] = [];
             }
             $year_records = $report[$year];
