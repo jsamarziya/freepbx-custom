@@ -362,7 +362,11 @@ var CallblockerC = UCPMC.extend({
         select.empty();
         select.append('<option>All</option>');
         select.append('<option data-divider="true"></option>');
-        select.append('<option>2021</option>');
+        const years = Object.keys(data);
+        years.sort();
+        for (const year of years) {
+            select.append(`<option>${year}</option>`);
+        }
         select.selectpicker('refresh');
 
         const callsBlocked = 9;
