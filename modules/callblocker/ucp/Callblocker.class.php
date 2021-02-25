@@ -542,15 +542,15 @@ EOT;
             $stmt->close();
         }
         $mysqli->close();
-        dbug("*** generating report");
-        return $calls;
         $report = [];
         foreach ($calls as &$call) {
             $year = $call['year'];
+            dbug("year: ${year}");
             if (!in_array($year, $report)) {
                 $report[$year] = [];
             }
             $year_records = $report[$year];
+            dbug("year_records: ${year_records}");
             foreach ($year_records as &$record) {
                 if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
                     $year_record = $record;
