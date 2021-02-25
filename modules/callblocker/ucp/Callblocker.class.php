@@ -510,9 +510,7 @@ EOT;
 
     function getCallHistoryReport() {
         $extension = $this->getExtension();
-        if (is_null($extension)) {
-            $extension = 1;
-        }
+        $extension = 1;
         $mysqli = $this->getMysqlConnection();
         $query = <<<'EOT'
 SELECT 
