@@ -365,8 +365,13 @@ var CallblockerC = UCPMC.extend({
         for (const year of Object.keys(data).sort().reverse()) {
             select.append(`<option>${year}</option>`);
         }
+        $('#mySelect').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+            UCP.Modules.Callblocker.callHistoryDateSelected(e, clickedIndex, isSelected, previousValue);
+        });
         select.selectpicker('refresh');
-
+    },
+    callHistoryDateSelected(e, clickedIndex, isSelected, previousValue) {
+        alert(`${e} ${clickedIndex} ${isSelected} ${previousValue}`);
         const callsBlocked = 9;
         const callsBlacklisted = 1;
         const callsAccepted = 3;
