@@ -546,7 +546,6 @@ EOT;
         foreach ($calls as $call) {
             $year = $call['year'];
             if (!array_key_exists($year, $report)) {
-                dbug("creating report for ${year}");
                 $report[$year] = [];
             }
             $year_records = $report[$year];
@@ -559,13 +558,16 @@ EOT;
             }
             $description = $this->getDescription($call['clid']);
             if (isset($year_record)) {
+                dbug("updating existing record");
                 $year_record['description'][] = $description;
             } else {
+                dbug("adding new record");
                 unset($call['year']);
                 unset($call['clid']);
                 $call['description'] = [$description];
                 $report[$year][] = $call;
             }
+            dbug($report);
         }
         return $report;
     }
