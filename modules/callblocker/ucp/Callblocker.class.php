@@ -542,7 +542,7 @@ EOT;
             $stmt->close();
         }
         $mysqli->close();
-        error_log("*** generating report");
+        dbug("*** generating report");
         return $calls;
         $report = [];
         foreach ($calls as &$call) {
