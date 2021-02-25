@@ -78,7 +78,7 @@ var CallblockerC = UCPMC.extend({
      */
     showDashboard: function (dashboard_id) {
         const dateRangeSelect = $("#call-history-report-date-range");
-        if (dateRangeSelect){
+        if (dateRangeSelect != null){
             alert("load call history report now");
         }
     }
