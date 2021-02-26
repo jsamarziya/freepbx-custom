@@ -79,7 +79,11 @@ var CallblockerC = UCPMC.extend({
     showDashboard: function (dashboard_id) {
         for (const widget of dashboards[dashboard_id]) {
             if (widget.widget_type_id === "call_history_report") {
-                $('#call-history-report-date').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+                let select = null;
+                while (select = null) {
+                    select = $('#call-history-report-date');
+                }
+                select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
                     UCP.Modules.Callblocker.callHistoryDateSelected();
                 });
                 UCP.Modules.Callblocker.loadCallHistoryReport();
@@ -363,7 +367,6 @@ var CallblockerC = UCPMC.extend({
     },
     setCallHistoryReport: function (data) {
         const select = $('#call-history-report-date');
-        console.log(select);
         select.data('call-history', data);
         select.empty();
         select.append('<option value="all">All</option>');
@@ -376,10 +379,7 @@ var CallblockerC = UCPMC.extend({
     },
     callHistoryDateSelected: function () {
         const select = $('#call-history-report-date');
-        let callHistory = null;
-        while (callHistory == null) {
-            callHistory = select.data('call-history');
-        }
+        const callHistory = select.data('call-history');
         const value = select.val();
         let selectedData;
         if (value === 'all') {
