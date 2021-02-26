@@ -6,7 +6,7 @@
         <span id="calls-blacklisted" class="label label-danger" style="margin-left: 5ex;"></span>
         <span id="calls-accepted" class="label label-success" style="margin-left: 5ex;"></span>
     </h3>
-    <div style="margin-top: 5em;">
+    <div style="margin-top: 4em;">
         <div id="blocked-callers-table-toolbar">
             <h4>Blocked Calls</h4>
         </div>
@@ -24,7 +24,7 @@
         >
             <thead>
             <tr>
-                <th data-field="count" data-sortable="true">Calls</th>
+                <th data-field="count" data-sortable="true" data-width="5%">Calls</th>
                 <th data-field="cid" data-sortable="true">CID</th>
                 <th data-field="description" data-sortable="true"
                     data-formatter="UCP.Modules.Callblocker.formatCallerDescription">
