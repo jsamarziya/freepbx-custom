@@ -357,6 +357,22 @@ var CallblockerC = UCPMC.extend({
             }
         });
     },
+    setCallHistoryReport: function (data) {
+        const select = $('#call-history-report-date');
+        select.data('call-history', data);
+        select.empty();
+        select.append('<option value="all">All</option>');
+        select.append('<option data-divider="true"></option>');
+        for (const year of Object.keys(data).sort().reverse()) {
+            select.append(`<option value="${year}">${year}</option>`);
+        }
+        select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+            UCP.Modules.Callblocker.callHistoryDateSelected();
+        });
+        select.selectpicker('refresh');
+        select.selectpicker('val', 'all');
+        UCP.Modules.Callblocker.callHistoryDateSelected();
+    },
     callHistoryDateSelected: function () {
         const select = $('#call-history-report-date');
         const callHistory = select.data('call-history');
@@ -403,21 +419,5 @@ var CallblockerC = UCPMC.extend({
     },
     formatCallerDescription: function (value, row, index, field) {
         return value.sort().map(x => new Option(x).innerHTML).join('<br/>');
-    },
-    setCallHistoryReport: function (data) {
-        const select = $('#call-history-report-date');
-        select.data('call-history', data);
-        select.empty();
-        select.append('<option value="all">All</option>');
-        select.append('<option data-divider="true"></option>');
-        for (const year of Object.keys(data).sort().reverse()) {
-            select.append(`<option value="${year}">${year}</option>`);
-        }
-        select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-            UCP.Modules.Callblocker.callHistoryDateSelected();
-        });
-        select.selectpicker('refresh');
-        select.selectpicker('val', 'all');
-        UCP.Modules.Callblocker.setCallHistoryDateSelected();
     },
 });
