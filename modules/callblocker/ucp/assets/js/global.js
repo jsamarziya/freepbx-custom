@@ -420,7 +420,7 @@ var CallblockerC = UCPMC.extend({
     setCallHistoryTableData: function (table, data) {
         table.bootstrapTable('load', data);
         table.bootstrapTable('selectPage', 1);
-    }
+    },
     formatCallerDescription: function (value, row, index, field) {
         return value.sort().map(x => new Option(x).innerHTML).join('<br/>');
     },
