@@ -378,6 +378,7 @@ var CallblockerC = UCPMC.extend({
         const value = select.val();
         let selectedData;
         if (value === 'all') {
+            selectedData = [];
             for (const yearData of Object.values(callHistory)) {
                 selectedData = selectedData.concat(yearData);
             }
