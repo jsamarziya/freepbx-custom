@@ -80,7 +80,7 @@ var CallblockerC = UCPMC.extend({
         for (const widget of dashboards[dashboard_id]) {
             if (widget.widget_type_id === "call_history_report") {
                 let select = null;
-                while (select = null) {
+                while (select == null) {
                     select = $('#call-history-report-date');
                 }
                 select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
