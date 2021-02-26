@@ -357,11 +357,13 @@ var CallblockerC = UCPMC.extend({
             },
             success: function (data) {
                 UCP.Modules.Callblocker.setCallHistoryReport(data);
+                UCP.Modules.Callblocker.callHistoryDateSelected();
             }
         });
     },
     setCallHistoryReport: function (data) {
         const select = $('#call-history-report-date');
+        console.log(select);
         select.data('call-history', data);
         select.empty();
         select.append('<option value="all">All</option>');
