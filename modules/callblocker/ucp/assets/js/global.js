@@ -77,6 +77,23 @@ var CallblockerC = UCPMC.extend({
      * @param  {string}            dashboard_id The dashboard id
      */
     showDashboard: function (dashboard_id) {
+        for (const widget of dashboards[dashboard_id]) {
+            if (widget.widget_type_id === "call_history_report") {
+                async function loadReport() {
+                    let select = $('#call-history-report-date');
+                    while (select.length == 0) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        select = $('#call-history-report-date');
+                    }
+                    select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+                        UCP.Modules.Callblocker.callHistoryDateSelected();
+                    });
+                    UCP.Modules.Callblocker.loadCallHistoryReport();
+                }
+
+                loadReport();
+            }
+        }
     },
     /**
      * Window State
@@ -339,5 +356,83 @@ var CallblockerC = UCPMC.extend({
     addCallToList: function (list, description, index) {
         const entry = UCP.Modules.Callblocker.getCallHistoryEntry(index);
         UCP.Modules.Callblocker.showAddListEntryDialog(list, 'call-history-table', `Add ${description} Entry`, entry.cid, entry.description);
-    }
+    },
+    loadCallHistoryReport: function () {
+        $.ajax({
+            url: "ajax.php",
+            data: {
+                "module": "callblocker",
+                "command": "getCallHistoryReport",
+            },
+            success: function (data) {
+                UCP.Modules.Callblocker.setCallHistoryReport(data);
+                UCP.Modules.Callblocker.callHistoryDateSelected();
+            }
+        });
+    },
+    setCallHistoryReport: function (data) {
+        const select = $('#call-history-report-date');
+        select.data('call-history', data);
+        select.empty();
+        select.append('<option value="all">All</option>');
+        select.append('<option data-divider="true"></option>');
+        for (const year of Object.keys(data).sort().reverse()) {
+            select.append(`<option value="${year}">${year}</option>`);
+        }
+        select.selectpicker('refresh');
+        select.selectpicker('val', 'all');
+    },
+    callHistoryDateSelected: function () {
+        const select = $('#call-history-report-date');
+        const callHistory = select.data('call-history');
+        const value = select.val();
+        let selectedData;
+        if (value === 'all') {
+            selectedData = [];
+            for (const yearData of Object.values(callHistory)) {
+                selectedData = selectedData.concat(yearData);
+            }
+        } else {
+            selectedData = callHistory[value];
+        }
+        let callsBlocked = 0;
+        let blockedCallers = {};
+        let callsBlacklisted = 0;
+        let blacklistedCallers = {};
+        let callsAccepted = 0;
+        let acceptedCallers = {};
+        for (const call of selectedData) {
+            let callers;
+            if (call.disposition === "BLOCKED") {
+                callsBlocked += call.count;
+                callers = blockedCallers;
+            } else if (call.disposition === "BLACKLISTED") {
+                callsBlacklisted += call.count;
+                callers = blacklistedCallers;
+            } else if (call.disposition === "ACCEPTED") {
+                callsAccepted += call.count;
+                callers = acceptedCallers;
+            }
+            if (callers.hasOwnProperty(call.cid)) {
+                callers[call.cid].count += call.count;
+            } else {
+                callers[call.cid] = call;
+            }
+        }
+        $('#calls-blocked').html(`Blocked: ${callsBlocked}`);
+        $('#calls-blacklisted').html(`Blacklisted: ${callsBlacklisted}`);
+        $('#calls-accepted').html(`Accepted: ${callsAccepted}`);
+
+        function setCallHistoryTableData(table, data) {
+            table.bootstrapTable('load', data);
+            table.bootstrapTable('selectPage', 1);
+        }
+
+        setCallHistoryTableData($('#blocked-callers-table'), Object.values(blockedCallers));
+        setCallHistoryTableData($('#blacklisted-callers-table'), Object.values(blacklistedCallers));
+        setCallHistoryTableData($('#accepted-callers-table'), Object.values(acceptedCallers));
+    },
+    formatCallerDescription: function (value, row, index, field) {
+        return value.sort().map(x => new Option(x).innerHTML).join('<br/>');
+    },
 });

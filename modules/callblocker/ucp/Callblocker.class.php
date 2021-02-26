@@ -71,6 +71,16 @@ class Callblocker extends Modules {
             'minsize' => array('height' => 2, 'width' => 2), //The minimum size a widget can be when resized on the dashboard
             'noresize' => false //If set to true the widget will not be allowed to be resized
         );
+        $widget['list']['call_history_report'] = array(
+            'display' => _('Call History Report'), //Widget Subtitle
+            'description' => _('Call history report'), //Widget description
+            'hasSettings' => false, //Set to true if this widget has settings. This will make the cog (gear) icon display on the widget display
+            'icon' => 'fa fa-file-text-o', //If set the widget in on the side bar will use this icon instead of the category icon,
+            'dynamic' => false, //If set to true then this widget can be added multiple times, if false then this widget can only be added once per dashboard!,
+            'defaultsize' => array('height' => 9, 'width' => 8), //The default size of the widget when placed in the dashboard
+            'minsize' => array('height' => 2, 'width' => 2), //The minimum size a widget can be when resized on the dashboard
+            'noresize' => false //If set to true the widget will not be allowed to be resized
+        );
         $widget['list']['blacklist'] = array(
             'display' => _('Blacklist'), //Widget Subtitle
             'description' => _('List of banned callers'), //Widget description
@@ -126,6 +136,15 @@ class Callblocker extends Modules {
                 $widget = array(
                     'title' => _('Call History'),
                     'html' => $this->load_view(__DIR__ . '/views/call_history.php', $displayvars)
+                );
+                break;
+            case 'call_history_report':
+                $displayvars = array(
+                    'ext' => $this->getExtension()
+                );
+                $widget = array(
+                    'title' => _('Call History Report'),
+                    'html' => $this->load_view(__DIR__ . '/views/call_history_report.php', $displayvars)
                 );
                 break;
             case 'blacklist':
@@ -216,6 +235,7 @@ class Callblocker extends Modules {
             case 'updateListEntry':
             case 'deleteListEntry':
             case 'getCallHistory':
+            case 'getCallHistoryReport':
                 return true;
             default:
                 return false;
@@ -246,6 +266,9 @@ class Callblocker extends Modules {
                 break;
             case 'getCallHistory':
                 return $this->getCallHistory();
+                break;
+            case 'getCallHistoryReport':
+                return $this->getCallHistoryReport();
                 break;
             default:
                 return false;
@@ -373,10 +396,11 @@ class Callblocker extends Modules {
             $stmt->bind_result($count);
             $stmt->fetch();
             $stmt->close();
-            return $count;
         } else {
-            return 0;
+            $count = 0;
         }
+        $mysqli->close();
+        return $count;
     }
 
     function getCalls($extension, $page = 1, $orderby = 'date', $order = 'desc', $search = '', $limit = 100) {
@@ -455,6 +479,7 @@ EOT;
             }
             $stmt->close();
         }
+        $mysqli->close();
         foreach ($calls as &$call) {
             if ($call['duration'] > 59) {
                 $min = floor($call['duration'] / 60);
@@ -467,7 +492,7 @@ EOT;
                 $call['niceDuration'] = sprintf(_('%s sec'), $call['duration']);
             }
             $call['formattedTime'] = $this->UCP->View->getDateTime($call['timestamp']);
-            $call['description'] = trim(preg_replace('/ <.*>$/', '', $call['clid']), '"');
+            $call['description'] = $this->getDescription($call['clid']);
             unset($call['clid']);
             if (!is_null($call['whitelistDescription'])) {
                 $altDescription = $call['whitelistDescription'];
@@ -481,5 +506,67 @@ EOT;
             unset($call['blacklistDescription']);
         }
         return $calls;
+    }
+
+    function getCallHistoryReport() {
+        $extension = $this->getExtension();
+        $mysqli = $this->getMysqlConnection();
+        $query = <<<'EOT'
+SELECT 
+    COUNT(*) AS count, YEAR(calldate) AS year, src AS cid, clid, userfield AS disposition
+FROM
+    asteriskcdrdb.cdr
+WHERE
+    dst = ?
+GROUP BY year, src, clid, userfield
+EOT;
+        if ($stmt = $mysqli->prepare($query)) {
+            $stmt->bind_param('s', $extension);
+        }
+        $calls = [];
+        if ($stmt) {
+            $stmt->execute();
+            $stmt->bind_result($count, $year, $cid, $clid, $disposition);
+            while ($stmt->fetch()) {
+                $calls[] = array(
+                    'count' => $count,
+                    'year' => $year,
+                    'cid' => $cid,
+                    'clid' => $clid,
+                    'disposition' => $disposition,
+                );
+            }
+            $stmt->close();
+        }
+        $mysqli->close();
+        $report = [];
+        foreach ($calls as $call) {
+            $year = $call['year'];
+            $description = $this->getDescription($call['clid']);
+            if (!array_key_exists($year, $report)) {
+                $report[$year] = [];
+            }
+            $year_records = &$report[$year];
+            $found_record = false;
+            foreach ($year_records as &$record) {
+                if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
+                    $record['count'] += $call['count'];
+                    $record['description'][] = $description;
+                    $found_record = true;
+                    break;
+                }
+            }
+            if (!$found_record) {
+                unset($call['year']);
+                unset($call['clid']);
+                $call['description'] = [$description];
+                $year_records[] = $call;
+            }
+        }
+        return $report;
+    }
+
+    function getDescription($clid) {
+        return trim(preg_replace('/ <.*>$/', '', $clid), '"');
     }
 }
