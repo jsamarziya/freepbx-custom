@@ -413,10 +413,14 @@ var CallblockerC = UCPMC.extend({
         $('#calls-blocked').html(`Blocked: ${callsBlocked}`);
         $('#calls-blacklisted').html(`Blacklisted: ${callsBlacklisted}`);
         $('#calls-accepted').html(`Accepted: ${callsAccepted}`);
-        $('#blocked-callers-table').bootstrapTable('load', Object.values(blockedCallers));
-        $('#blacklisted-callers-table').bootstrapTable('load', Object.values(blacklistedCallers));
-        $('#accepted-callers-table').bootstrapTable('load', Object.values(acceptedCallers));
+        UCP.Modules.Callblocker.setCallHistoryTableData($('#blocked-callers-table'), Object.values(blockedCallers);
+        UCP.Modules.Callblocker.setCallHistoryTableData($('#blacklisted-callers-table'), Object.values(blacklistedCallers);
+        UCP.Modules.Callblocker.setCallHistoryTableData($('#accepted-callers-table'), Object.values(acceptedCallers);
     },
+    setCallHistoryTableData(table, data) {
+        table.bootstrapTable('load', data);
+        table.bootstrapTable('selectPage', 1);
+    }
     formatCallerDescription: function (value, row, index, field) {
         return value.sort().map(x => new Option(x).innerHTML).join('<br/>');
     },
