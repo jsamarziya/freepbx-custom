@@ -83,6 +83,7 @@ var CallblockerC = UCPMC.extend({
                 while (select == null) {
                     select = $('#call-history-report-date');
                 }
+                console.log(select);
                 select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
                     UCP.Modules.Callblocker.callHistoryDateSelected();
                 });
