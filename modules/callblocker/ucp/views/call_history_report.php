@@ -19,7 +19,7 @@
                data-toggle="table"
                data-pagination="true"
                data-search="true"
-               data-sort-name="cid"
+               data-sort-name="count"
                data-escape="true"
         >
             <thead>
@@ -47,7 +47,7 @@
                data-toggle="table"
                data-pagination="true"
                data-search="true"
-               data-sort-name="cid"
+               data-sort-name="count"
                data-escape="true"
         >
             <thead>
@@ -75,7 +75,7 @@
                data-toggle="table"
                data-pagination="true"
                data-search="true"
-               data-sort-name="cid"
+               data-sort-name="count"
                data-escape="true"
         >
             <thead>
