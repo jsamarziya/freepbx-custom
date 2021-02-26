@@ -373,7 +373,7 @@ var CallblockerC = UCPMC.extend({
         select.selectpicker('val', 'all');
         UCP.Modules.Callblocker.setCallHistoryDateSelected();
     },
-    callHistoryDateSelected() {
+    callHistoryDateSelected: function() {
         const select = $('#call-history-report-date');
         const callHistory = select.data('call-history');
         const value = select.val();
