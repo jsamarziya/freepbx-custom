@@ -79,15 +79,19 @@ var CallblockerC = UCPMC.extend({
     showDashboard: function (dashboard_id) {
         for (const widget of dashboards[dashboard_id]) {
             if (widget.widget_type_id === "call_history_report") {
-                let select = [];
-                while (select.length == 0) {
-                    select = $('#call-history-report-date');
+                async function loadReport() {
+                    let select = $('#call-history-report-date');
+                    while (select.length == 0) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        select = $('#call-history-report-date');
+                    }
+                    select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+                        UCP.Modules.Callblocker.callHistoryDateSelected();
+                    });
+                    UCP.Modules.Callblocker.loadCallHistoryReport();
                 }
-                console.log(select);
-                select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-                    UCP.Modules.Callblocker.callHistoryDateSelected();
-                });
-                UCP.Modules.Callblocker.loadCallHistoryReport();
+
+                loadReport();
             }
         }
     },
