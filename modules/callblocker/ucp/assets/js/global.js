@@ -366,7 +366,6 @@ var CallblockerC = UCPMC.extend({
             },
             success: function (data) {
                 UCP.Modules.Callblocker.setCallHistoryReport(data);
-                UCP.Modules.Callblocker.callHistoryDateSelected();
             }
         });
     },
