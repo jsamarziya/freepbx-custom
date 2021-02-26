@@ -22,7 +22,10 @@
         <tr>
             <th data-field="count" data-sortable="true">Calls</th>
             <th data-field="cid" data-sortable="true">CID</th>
-            <th data-field="description" data-sortable="true">Description</th>
+            <th data-field="description" data-sortable="true"
+                data-formatter="UCP.Modules.Callblocker.formatCallerDescription">
+                Description
+            </th>
         </tr>
         </thead>
     </table>
