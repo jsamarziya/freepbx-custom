@@ -417,6 +417,6 @@ var CallblockerC = UCPMC.extend({
         $('#blocked-callers-table').bootstrapTable('load', blockedCallers);
     },
     formatCallerDescription: function(value, row, index, field){
-        return value.map(x => new Option(x).innerHTML).join(', ');
+        return value.map(x => `<div>${new Option(x).innerHTML}</div>`).join('');
     }
 });
