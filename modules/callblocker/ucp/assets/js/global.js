@@ -79,8 +79,8 @@ var CallblockerC = UCPMC.extend({
     showDashboard: function (dashboard_id) {
         for (const widget of dashboards[dashboard_id]) {
             if (widget.widget_type_id === "call_history_report") {
-                let select = null;
-                while (select == null) {
+                let select = [];
+                while (select.length == 0) {
                     select = $('#call-history-report-date');
                 }
                 console.log(select);
