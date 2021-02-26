@@ -6,9 +6,9 @@
         <span id="calls-blacklisted" class="label label-danger" style="margin-left: 5ex;"></span>
         <span id="calls-accepted" class="label label-success" style="margin-left: 5ex;"></span>
     </h3>
-    <div style="margin-top: 1em;">
+    <div style="margin-top: 5em;">
         <div id="blocked-callers-table-toolbar">
-            <h4 style="margin-top: 2em;">Blocked Calls</h4>
+            <h4>Blocked Calls</h4>
         </div>
         <table id="blocked-callers-table"
                class="table"
