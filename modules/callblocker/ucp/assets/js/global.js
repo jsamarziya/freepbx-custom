@@ -374,7 +374,10 @@ var CallblockerC = UCPMC.extend({
     },
     callHistoryDateSelected: function () {
         const select = $('#call-history-report-date');
-        const callHistory = select.data('call-history') || [];
+        let callHistory = null;
+        while (callHistory == null) {
+            callHistory = select.data('call-history');
+        }
         const value = select.val();
         let selectedData;
         if (value === 'all') {
