@@ -366,11 +366,11 @@ var CallblockerC = UCPMC.extend({
         for (const year of Object.keys(data).sort().reverse()) {
             select.append(`<option value="${year}">${year}</option>`);
         }
+        select.selectpicker('refresh');
+        select.selectpicker('val', 'all');
         select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
             UCP.Modules.Callblocker.callHistoryDateSelected();
         });
-        select.selectpicker('refresh');
-        select.selectpicker('val', 'all');
         UCP.Modules.Callblocker.callHistoryDateSelected();
     },
     callHistoryDateSelected: function () {
