@@ -6,13 +6,14 @@
         <span id="calls-blacklisted" class="label label-danger" style="margin-left: 5ex;"></span>
         <span id="calls-accepted" class="label label-success" style="margin-left: 5ex;"></span>
     </h3>
+    <h5>Blocked Calls</h5>
     <table id="blocked-callers-table"
            class="table"
            data-cookie="true"
            data-cookie-id-table="ucp-callblocker-blocked-callers-table"
            data-show-toggle="true"
            data-toggle="table"
-           data-pagination="false"
+           data-pagination="true"
            data-search="true"
            data-sort-name="cid"
            data-escape="true"
