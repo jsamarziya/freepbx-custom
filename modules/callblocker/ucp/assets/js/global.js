@@ -79,6 +79,9 @@ var CallblockerC = UCPMC.extend({
     showDashboard: function (dashboard_id) {
         for (const widget of dashboards[dashboard_id]) {
             if (widget.widget_type_id === "call_history_report") {
+                $('#call-history-report-date').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+                    UCP.Modules.Callblocker.callHistoryDateSelected();
+                });
                 UCP.Modules.Callblocker.loadCallHistoryReport();
             }
         }
@@ -368,14 +371,10 @@ var CallblockerC = UCPMC.extend({
         }
         select.selectpicker('refresh');
         select.selectpicker('val', 'all');
-        select.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-            UCP.Modules.Callblocker.callHistoryDateSelected();
-        });
-        UCP.Modules.Callblocker.callHistoryDateSelected();
     },
     callHistoryDateSelected: function () {
         const select = $('#call-history-report-date');
-        const callHistory = select.data('call-history');
+        const callHistory = select.data('call-history') || [];
         const value = select.val();
         let selectedData;
         if (value === 'all') {
