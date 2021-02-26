@@ -378,45 +378,42 @@ var CallblockerC = UCPMC.extend({
         const value = select.val();
         let selectedData;
         if (value === 'all') {
-            const calls = {};
-            for (const year of Object.values(callHistory)) {
-                for (const call of year) {
-                    const key = `${call.cid}[${call.disposition}`;
-                    if (calls.hasOwnProperty(key)) {
-                        calls[key].count += call.count;
-                    } else {
-                        calls[key] = call;
-                    }
-                }
+            for (const yearData of Object.values(callHistory)) {
+                selectedData = selectedData.concat(yearData);
             }
-            selectedData = Object.values(calls);
         } else {
             selectedData = callHistory[value];
         }
         let callsBlocked = 0;
-        let blockedCallers = [];
+        let blockedCallers = {};
         let callsBlacklisted = 0;
-        let blacklistedCallers = [];
+        let blacklistedCallers = {};
         let callsAccepted = 0;
-        let acceptedCallers = [];
+        let acceptedCallers = {};
         for (const call of selectedData) {
+            let callers;
             if (call.disposition === "BLOCKED") {
                 callsBlocked += call.count;
-                blockedCallers.push(call);
+                callers = blockedCallers;
             } else if (call.disposition === "BLACKLISTED") {
                 callsBlacklisted += call.count;
-                blacklistedCallers.push(call);
+                callers = blacklistedCallers;
             } else if (call.disposition === "ACCEPTED") {
                 callsAccepted += call.count;
-                acceptedCallers.push(call);
+                callers = acceptedCallers;
+            }
+            if (callers.hasOwnProperty(call.cid)) {
+                callers[call.cid].count += call.count;
+            } else {
+                callers[call.cid] = call;
             }
         }
         $('#calls-blocked').html(`Blocked: ${callsBlocked}`);
         $('#calls-blacklisted').html(`Blacklisted: ${callsBlacklisted}`);
         $('#calls-accepted').html(`Accepted: ${callsAccepted}`);
-        $('#blocked-callers-table').bootstrapTable('load', blockedCallers);
-        $('#blacklisted-callers-table').bootstrapTable('load', blacklistedCallers);
-        $('#accepted-callers-table').bootstrapTable('load', acceptedCallers);
+        $('#blocked-callers-table').bootstrapTable('load', Object.values(blockedCallers));
+        $('#blacklisted-callers-table').bootstrapTable('load', Object.values(blacklistedCallers));
+        $('#accepted-callers-table').bootstrapTable('load', Object.values(acceptedCallers));
     },
     formatCallerDescription: function (value, row, index, field) {
         return value.sort().map(x => new Option(x).innerHTML).join('<br/>');
