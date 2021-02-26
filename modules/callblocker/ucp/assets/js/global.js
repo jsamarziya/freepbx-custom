@@ -346,6 +346,7 @@ var CallblockerC = UCPMC.extend({
         UCP.Modules.Callblocker.showAddListEntryDialog(list, 'call-history-table', `Add ${description} Entry`, entry.cid, entry.description);
     },
     loadCallHistoryReport: function () {
+        alert("loading now!");
         $.ajax({
             url: "ajax.php",
             data: {
