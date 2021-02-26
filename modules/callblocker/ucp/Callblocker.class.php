@@ -550,6 +550,7 @@ EOT;
             $found_record = false;
             foreach ($year_records as &$record) {
                 if ($record['cid'] == $call['cid'] and $record['disposition'] == $call['disposition']) {
+                    $record['count'] += $call['count'];
                     $record['description'][] = $description;
                     $found_record = true;
                     break;
