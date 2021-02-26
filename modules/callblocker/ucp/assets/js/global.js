@@ -417,7 +417,7 @@ var CallblockerC = UCPMC.extend({
         UCP.Modules.Callblocker.setCallHistoryTableData($('#blacklisted-callers-table'), Object.values(blacklistedCallers);
         UCP.Modules.Callblocker.setCallHistoryTableData($('#accepted-callers-table'), Object.values(acceptedCallers);
     },
-    setCallHistoryTableData(table, data) {
+    setCallHistoryTableData: function (table, data) {
         table.bootstrapTable('load', data);
         table.bootstrapTable('selectPage', 1);
     }
