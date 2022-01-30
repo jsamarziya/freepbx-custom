@@ -14,9 +14,7 @@
     </menuitems>
     <hooks>
         <ucp class="Ucp">
-            <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="constructModuleConfigPages">
-                ucpConfigPage
-            </method>
+            <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="constructModuleConfigPages">ucpConfigPage</method>
             <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="addUser">ucpAddUser</method>
             <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="updateUser">ucpUpdateUser</method>
             <method namespace="FreePBX\Modules" class="Callblocker" callingMethod="delUser">ucpDelUser</method>
