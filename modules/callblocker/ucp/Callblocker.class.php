@@ -595,7 +595,7 @@ EOT;
         $mysqli = $this->getMysqlConnection();
         $result = $mysqli->query("SELECT value FROM callblocker.settings WHERE name = 'enabled'");
         $row = $result->fetch_assoc();
-        $enabled = $row['enabled'] == 'true';
+        $enabled = $row['value'] == 'true';
         $mysqli->close();
         return array(
             'enabled' => $enabled
