@@ -254,6 +254,7 @@ class Callblocker extends Modules {
             case 'deleteListEntry':
             case 'getCallHistory':
             case 'getCallHistoryReport':
+            case 'getCallBlockerStatus':
                 return true;
             default:
                 return false;
@@ -288,6 +289,8 @@ class Callblocker extends Modules {
             case 'getCallHistoryReport':
                 return $this->getCallHistoryReport();
                 break;
+            case 'getCallBlockerStatus':
+                return $this->getCallBlockerStatus();
             default:
                 return false;
                 break;
@@ -586,5 +589,11 @@ EOT;
 
     function getDescription($clid) {
         return trim(preg_replace('/ <.*>$/', '', $clid), '"');
+    }
+
+    function getCallBlockerStatus() {
+        return array(
+            'enabled' => true
+        );
     }
 }

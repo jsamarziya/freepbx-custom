@@ -437,4 +437,19 @@ var CallblockerC = UCPMC.extend({
     formatCallerDescription: function (value, row, index, field) {
         return value.sort().map(x => new Option(x).innerHTML).join('<br/>');
     },
+    getCallBlockerStatus: function () {
+        $.ajax({
+            url: "ajax.php",
+            data: {
+                "module": "callblocker",
+                "command": "getCallBlockerStatus",
+            },
+            success: function (data) {
+                UCP.Modules.Callblocker.updateCallBlockerEnabled(data);
+            }
+        });
+    },
+    updateCallBlockerEnabled: function(data) {
+        alert(data);
+    },
 });

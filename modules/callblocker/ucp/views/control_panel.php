@@ -16,6 +16,6 @@
         </tr>
     </table>
     <script>
-        alert("ok")
+        UCP.Modules.Callblocker.getCallBlockerStatus();
     </script>
 </div>
