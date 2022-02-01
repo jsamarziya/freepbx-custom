@@ -61,6 +61,16 @@ class Callblocker extends Modules {
             'icon' => 'fa fa-ban', //The Widget Icon from http://fontawesome.io/icons/
             'list' => array() //List of Widgets this module provides
         );
+        $widget['list']['control_panel'] = array(
+            'display' => _('Control Panel'), //Widget Subtitle
+            'description' => _('Call Blocker control panel'), //Widget description
+            'hasSettings' => false, //Set to true if this widget has settings. This will make the cog (gear) icon display on the widget display
+            'icon' => 'fa fa-cog', //If set the widget in on the side bar will use this icon instead of the category icon,
+            'dynamic' => false, //If set to true then this widget can be added multiple times, if false then this widget can only be added once per dashboard!,
+            'defaultsize' => array('height' => 9, 'width' => 8), //The default size of the widget when placed in the dashboard
+            'minsize' => array('height' => 2, 'width' => 2), //The minimum size a widget can be when resized on the dashboard
+            'noresize' => false //If set to true the widget will not be allowed to be resized
+        );
         $widget['list']['call_history'] = array(
             'display' => _('Call History'), //Widget Subtitle
             'description' => _('Call history'), //Widget description
@@ -129,6 +139,14 @@ class Callblocker extends Modules {
     public function getWidgetDisplay($id, $uuid) {
         $widget = array();
         switch ($id) {
+            case 'control_panel':
+                $displayvars = array(
+                );
+                $widget = array(
+                    'title' => _('Control Panel'),
+                    'html' => $this->load_view(__DIR__ . '/views/control_panel.php', $displayvars)
+                );
+                break;
             case 'call_history':
                 $displayvars = array(
                     'ext' => $this->getExtension()
