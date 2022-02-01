@@ -2,7 +2,7 @@
     <div style="margin-top: 10px;">
         Call Blocker&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="checkbox" id="cbenable" name="cbenable" data-toggle="toggle" data-on="Enabled" data-off="Disabled"
-               data-size="mini" onchange="enableChanged()">
+               data-size="mini" onchange="enableChanged(this.value)">
     </div>
 </div>
 
@@ -24,8 +24,8 @@
         $('#cbenable').bootstrapToggle(data["enabled"] ? 'on' : 'off');
     }
 
-    function enableChanged(event) {
-        alert(event.target.value);
+    function enableChanged(value) {
+        alert(value);
         // $.ajax({
         //     url: "ajax.php",
         //     data: {
