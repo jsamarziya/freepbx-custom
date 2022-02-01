@@ -4,6 +4,7 @@
             <td>
                 Call Blocker&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </td>
+            <input type="checkbox" name="dndenable" data-toggle="toggle" data-on="<?php echo _("Enabled")?>" data-off="<?php echo _("Disabled")?>">
             <td>
                 <div class="onoffswitch">
                     <input type="checkbox" name="enabled" class="onoffswitch-checkbox" id="enabled">
@@ -16,6 +17,21 @@
         </tr>
     </table>
     <script>
-        UCP.Modules.Callblocker.getCallBlockerStatus();
+       function getCallBlockerStatus() {
+            $.ajax({
+                url: "ajax.php",
+                data: {
+                    "module": "callblocker",
+                    "command": "getCallBlockerStatus",
+                },
+                success: function (data) {
+                    updateCallBlockerEnabled(data);
+                }
+            });
+        }
+        function updateCallBlockerEnabled(data) {
+            alert(data);
+        }
+        getCallBlockerStatus();
     </script>
 </div>
