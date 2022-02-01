@@ -413,10 +413,12 @@ var CallblockerC = UCPMC.extend({
                 callsAccepted += call.count;
                 callers = acceptedCallers;
             }
-            if (callers.hasOwnProperty(call.cid)) {
-                callers[call.cid].count += call.count;
-            } else {
-                callers[call.cid] = call;
+            if (callers != null) {
+                if (callers.hasOwnProperty(call.cid)) {
+                    callers[call.cid].count += call.count;
+                } else {
+                    callers[call.cid] = call;
+                }
             }
         }
         $('#calls-blocked').html(`Blocked: ${callsBlocked}`);
