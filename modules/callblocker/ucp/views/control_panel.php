@@ -16,7 +16,7 @@
         }
 
         function updateCallBlockerEnabled(data) {
-            $('#cbenable').checked = data["enabled"];
+            $('#cbenable').bootstrapToggle(data["enabled"] ? 'on' : 'off');
         }
 
         getCallBlockerStatus();
