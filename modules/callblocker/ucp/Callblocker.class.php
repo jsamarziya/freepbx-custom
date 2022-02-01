@@ -255,6 +255,7 @@ class Callblocker extends Modules {
             case 'getCallHistory':
             case 'getCallHistoryReport':
             case 'getCallBlockerStatus':
+            case 'setCallBlockerStatus':
                 return true;
             default:
                 return false;
@@ -291,6 +292,10 @@ class Callblocker extends Modules {
                 break;
             case 'getCallBlockerStatus':
                 return $this->getCallBlockerStatus();
+                break;
+            case 'setCallBlockerStatus':
+                return $this->setCallBlockerStatus($_REQUEST['value']);
+                break;
             default:
                 return false;
                 break;
@@ -593,12 +598,22 @@ EOT;
 
     function getCallBlockerStatus() {
         $mysqli = $this->getMysqlConnection();
-        $result = $mysqli->query("SELECT value FROM callblocker.settings WHERE name = 'enabled'");
+        $result = $mysqli->query("SELECT value FROM callblocker.settings WHERE name='enabled'");
         $row = $result->fetch_assoc();
         $enabled = $row['value'] == 'true';
         $mysqli->close();
         return array(
             'enabled' => $enabled
         );
+    }
+
+    function setCallBlockerStatus($value) {
+        $mysqli = $this->getMysqlConnection();
+        if ($stmt = $mysqli->prepare("UPDATE callblocker.settings SET value=? WHERE name='enabled'")) {
+            $stmt->bind_param('s', $value);
+            $stmt->execute();
+            $stmt->close();
+        }
+        $mysqli->close();
     }
 }
