@@ -16,7 +16,7 @@
         }
 
         function updateCallBlockerEnabled(data) {
-            alert(data);
+            alert(data["enabled"]);
         }
 
         getCallBlockerStatus();
