@@ -2,7 +2,7 @@
     <table>
         <tr>
             <td>
-                Call Blocker
+                Call Blocker&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </td>
             <td>
                 <div class="onoffswitch">
