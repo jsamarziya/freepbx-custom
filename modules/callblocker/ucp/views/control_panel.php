@@ -1,5 +1,5 @@
 <div class="col-md-12">
-    <div>
+    <div style="margin-top: 10px;">
         Call Blocker&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="checkbox" id="cbenable" name="cbenable" data-toggle="toggle" data-on="Enabled" data-off="Disabled"
                data-size="mini">
