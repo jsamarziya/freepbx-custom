@@ -1,6 +1,6 @@
 <div class="col-md-12">
     Call Blocker&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <input type="checkbox" id="cbenable" name="cbenable" data-toggle="toggle" data-on="Enabled" data-off="Disabled">
+    <input type="checkbox" id="cbenable" name="cbenable" data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-size="small">
     <script>
         function getCallBlockerStatus() {
             $.ajax({
