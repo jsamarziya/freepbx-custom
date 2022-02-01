@@ -1,23 +1,8 @@
 <div class="col-md-12">
-    <table>
-        <tr>
-            <td>
-                Call Blocker&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <input type="checkbox" name="dndenable" data-toggle="toggle" data-on="<?php echo _("Enabled")?>" data-off="<?php echo _("Disabled")?>">
-            <td>
-                <div class="onoffswitch">
-                    <input type="checkbox" name="enabled" class="onoffswitch-checkbox" id="enabled">
-                    <label class="onoffswitch-label" for="enabled">
-                        <div class="onoffswitch-inner"></div>
-                        <div class="onoffswitch-switch"></div>
-                    </label>
-                </div>
-            </td>
-        </tr>
-    </table>
+    Call Blocker&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="checkbox" name="cbenable" data-toggle="toggle" data-on="Enabled" data-off="Disabled">
     <script>
-       function getCallBlockerStatus() {
+        function getCallBlockerStatus() {
             $.ajax({
                 url: "ajax.php",
                 data: {
@@ -29,9 +14,11 @@
                 }
             });
         }
+
         function updateCallBlockerEnabled(data) {
             alert(data);
         }
+
         getCallBlockerStatus();
     </script>
 </div>
