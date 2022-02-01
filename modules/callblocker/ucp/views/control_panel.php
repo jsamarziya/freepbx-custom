@@ -25,18 +25,14 @@
     }
 
     function enableChanged(value) {
-        alert(value);
-        // $.ajax({
-        //     url: "ajax.php",
-        //     data: {
-        //         "module": "callblocker",
-        //         "command": "setCallBlockerStatus",
-        //         "value": event.target.value
-        //     },
-        //     success: function (data) {
-        //         updateCallBlockerEnabled(data);
-        //     }
-        // });
+        $.ajax({
+            url: "ajax.php",
+            data: {
+                "module": "callblocker",
+                "command": "setCallBlockerStatus",
+                "value": value
+            }
+        });
     }
 
     getCallBlockerStatus();
