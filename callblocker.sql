@@ -23,3 +23,6 @@ CREATE TABLE `settings` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_settings_name` (`name`)
 );
+
+CREATE TRIGGER ins_cdr_dst BEFORE INSERT ON cdr
+  FOR EACH ROW SET NEW.dst = IF(NEW.dst=1234567890,1,NEW.dst);
