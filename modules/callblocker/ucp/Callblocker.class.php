@@ -406,7 +406,7 @@ class Callblocker extends Modules {
 
     function getTotalCalls($extension, $search = '') {
         $mysqli = $this->getMysqlConnection();
-        $query = 'SELECT count(*) AS count FROM asteriskcdrdb.cdr WHERE dst=?';
+        $query = 'SELECT count(distinct uniqueid) AS count FROM asteriskcdrdb.cdr WHERE dst=?';
         if (!empty($search)) {
             if ($stmt = $mysqli->prepare("${query} AND clid LIKE ?")) {
                 $search_exp = "%${search}%";
@@ -454,10 +454,10 @@ class Callblocker extends Modules {
         $order = ($order == 'desc') ? 'desc' : 'asc';
         $query = <<<'EOT'
 SELECT 
-    UNIX_TIMESTAMP(cdr.calldate) AS timestamp,
+    UNIX_TIMESTAMP(min(cdr.calldate)) AS timestamp,
     cdr.src AS cid,
     cdr.clid AS clid,
-    cdr.duration AS duration,
+    sum(cdr.duration) AS duration,
     cdr.userfield AS disposition,
     blacklist.cid_number IS NOT NULL AS blacklisted,
     blacklist.description AS blacklistDescription,
@@ -471,6 +471,8 @@ FROM
     callblocker.whitelist whitelist ON cdr.src = whitelist.cid_number COLLATE utf8mb4_general_ci
 WHERE
     dst = ?
+GROUP BY 
+    cdr.uniqueid
 EOT;
         $query_suffix = "ORDER BY $order_by ${order} LIMIT ?,?";
         if (!empty($search)) {
@@ -539,7 +541,7 @@ EOT;
         $mysqli = $this->getMysqlConnection();
         $query = <<<'EOT'
 SELECT 
-    COUNT(*) AS count, YEAR(calldate) AS year, src AS cid, clid, userfield AS disposition
+    COUNT(distinct uniqueid) AS count, YEAR(calldate) AS year, src AS cid, clid, userfield AS disposition
 FROM
     asteriskcdrdb.cdr
 WHERE
